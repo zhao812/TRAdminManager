@@ -1,0 +1,1 @@
+export MenuReducer from '../view/main/reducer'

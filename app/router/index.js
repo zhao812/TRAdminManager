@@ -5,6 +5,8 @@ import * as RouterConst from '../static/const/routerConst'
 const App = cb => require.ensure([], require => { cb(null, require('../view/main').default)}, "App")
 const Login = cb => require.ensure([], require => { cb(null, require('../view/login').default)}, "Login")
 
+const UserList = cb => require.ensure([], require => { cb(null, require('../view/user').default)}, "userList")
+
 
 const Routers = {
 	path: RouterConst.ROUTER_HOME,
@@ -14,8 +16,13 @@ const Routers = {
 	},
 	childRoutes: [
 		{
-			path: RouterConst.ROUTER_LOGIN,
+			path: RouterConst.s,
 			getComponent(nextState, cb){ Login(cb) },
+		},
+		
+		{
+			path: RouterConst.User_List,
+			getComponent(nextState, cb){ UserList(cb) },
 		}
 	]
 }

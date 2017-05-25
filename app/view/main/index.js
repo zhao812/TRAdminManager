@@ -1,4 +1,6 @@
 import React, { PropTypes } from 'react'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 
 import { hashHistory } from 'react-router'
 import { Layout } from 'antd';
@@ -7,6 +9,7 @@ const { Header, Footer, Sider, Content } = Layout;
 import Headers from '../../components/header'
 import SiderMenu from '../../components/siderMenu'
 import * as RouterConst from '../../static/const/routerConst'
+import { getMenu } from './reducer/action'
 
 import './index.scss'
 
@@ -18,6 +21,7 @@ class App extends React.Component {
     }
 
     componentDidMount() {
+        this.props.getMenu().then((data)=>console.log(data))
     }
 
     getSiderMenuByRouter() {
@@ -51,7 +55,15 @@ class App extends React.Component {
     }
 }
 
+
 App.PropTypes = {
 }
 
-export default App
+let mapStateToProps = state => ({
+})
+
+let mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({ getMenu }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)
