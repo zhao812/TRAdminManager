@@ -1,17 +1,19 @@
+/**
+ * created by zhao at 2017/5/25
+ */
+'use strict'
 import * as ActionType from './actionType'
 
 const initialState = {
-    isLogin: false,
-    username: ""
+    userData: [],
 }
 
 export default function update (state = initialState, action){
     switch(action.type){
-        case ActionType.INIT_USER_LOGIN:
+        case ActionType.INIT_USER_LIST_DATA:
             return {
                 ...state,
-                username: action.data.username,
-                isLogin: true
+                userData: action.data.list,
             }
         default:
             return state
