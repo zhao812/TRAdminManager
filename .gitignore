@@ -1,0 +1,8 @@
+*.DS_Store
+*.js.map
+*.map
+build/
+dist/
+node_modules/
+doc/
+*.log
