@@ -25,24 +25,31 @@ class Headers extends React.Component {
     }
 
     render() {
+        let { username } = this.props
         let { Header } = Layout, SubMenu = Menu.SubMenu, MenuItemGroup = Menu.ItemGroup
-
         return(
             <Header className="header-div">
-                <div className="logo"></div>
-                <Menu onClick={(e) => this.handleClick(e)} selectedKeys={[this.state.selectedTab]} mode="horizontal" className="menuUl">
-                    <Menu.Item key="home" className="menuLi"><Link to={RouterConst.ROUTER_HOME}>首页</Link></Menu.Item>
-                    <Menu.Item key="user" className="menuLi"><Link to={RouterConst.SEARCH_LIST}>用户画像</Link></Menu.Item>
-                    <Menu.Item key="pic" className="menuLi"><Link to={RouterConst.GET_MESSAGE}>画像营销</Link></Menu.Item>
-                    <Menu.Item key="doc" className="menuLi">说明文档</Menu.Item>
-                    <Menu.Item key="aboutus" className="menuLi">关于我们</Menu.Item>
-                </Menu>
+                <div className="logo">藤榕后台管理系统</div>
+                <div className="menu-right">
+                    <div className="menu-item">{username}</div>
+                    <div className="menu-item"><Button>退出</Button></div>
+                </div>
             </Header>
         )
     }
 }
 
 Headers.PropTypes = {
+    username: PropTypes.string.isRequired
 }
 
-export default Headers
+
+let mapStateToProps = state => ({
+    username: state.loginReducer.username
+})
+
+let mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({}, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Headers)

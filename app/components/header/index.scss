@@ -1,46 +1,26 @@
 .header-div{
-  background: #fff !important;
-  width:1280px;
-  margin:0 auto;
+  width: 100%;
+  min-width: 1280px;
+  background: #4292CF !important;
+  padding: 0;
 }
 
 .logo {
-  background: url(../../static/images/logo.png) no-repeat center;
-  width:140px;
+  width:280px;
   height: 100%;
+  font-size: 18px;
   float:left;
-}
-.ant-menu.menuUl{
-  background:none;
-  height:100%;
-  line-height: 64px;
-  float:left;
-}
-.ant-menu-horizontal .ant-menu-item.menuLi{
-  margin: 0;
-  height: 100%;
-  font-size: 14px;
-  color: #4c4c4c;
+  background: #3473A9;
+  padding: 0 20px;
+  color: #ffffff;
 }
 
-.login-btns{
+.menu-right{
   float: right;
 
-  button {
-    margin-left: 10px;
-    font-size: 14px;
-    height: 34px;
-  }
-
-  .bnLogin{
-    background: #ffffff;
-    color: #1a5bfb;
-    border: 1px solid #1a5bfb;
-    border-radius: 5px;
-  }
-
-  .bnRegister{
-    background: #1a5bfb;
+  .menu-item {
+    display: inline-block;
+    margin-right: 20px;
     color: #ffffff;
   }
 }

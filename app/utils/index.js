@@ -3,10 +3,20 @@
  * utils.js
  * 工具类
  */
-
+'use strict'
+import 'whatwg-fetch'
+import {size, each, assignIn} from "lodash";
 import { Modal } from 'antd';
 
-const fetch = (url, param, type = "GET",headers={}, repType="json") => {
+const toExcString = function(array,type={":":"=",",":"&"}){
+    let result ="";
+    for(let temp in array){
+        result+= temp+'='+array[temp]+"&"
+    }
+    return result.substring(-1,result.length-1);
+}
+
+const fetchMsg = (url, param, type = "GET",headers={}, repType="json") => {
     return (dispatch, getState) => {
 
         if(type.toLocaleUpperCase()==="GET"&&size(param)>0){
@@ -51,15 +61,15 @@ export function sendMsg(url, param, type = "GET",headers={}, repType="json"){
         
         return new Promise(function(resolve, reject){
             
-            dispatch(fetch(url, param, type, headers, repType))
-            .then(result=>{
-                if(result.resultCode > 0){
-                    resolve&&resolve(result.data || null)
+            dispatch(fetchMsg(url, param, type, headers, repType))
+            .then(data=>{
+                if(data.code == 0){
+                    resolve&&resolve(data.result || null)
                 }else{
-                    reject&&reject(result)
+                    reject&&reject(data)
                     Modal.error({
                         title: '提示',
-                        content: result.message,
+                        content: data.message,
                     })
                 }
             })

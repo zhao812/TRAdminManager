@@ -1,0 +1,79 @@
+{
+    "result": {
+        "list": [
+            {
+                "key": 1,
+                "username": "admin1",
+                "mail": "admin1.qbao.com",
+                "usergroup": "group1/group2/group3",
+                "userrights": "权限1/权限2/权限3"
+            },
+            {
+                "key": 2,
+                "username": "admin1",
+                "mail": "admin1.qbao.com",
+                "usergroup": "group1/group2/group3",
+                "userrights": "权限1/权限2/权限3"
+            },
+            {
+                "key": 3,
+                "username": "admin1",
+                "mail": "admin1.qbao.com",
+                "usergroup": "group1/group2/group3",
+                "userrights": "权限1/权限2/权限3"
+            },
+            {
+                "key": 4,
+                "username": "admin1",
+                "mail": "admin1.qbao.com",
+                "usergroup": "group1/group2/group3",
+                "userrights": "权限1/权限2/权限3"
+            },
+            {
+                "key": 5,
+                "username": "admin1",
+                "mail": "admin1.qbao.com",
+                "usergroup": "group1/group2/group3",
+                "userrights": "权限1/权限2/权限3"
+            },
+            {
+                "key": 6,
+                "username": "admin1",
+                "mail": "admin1.qbao.com",
+                "usergroup": "group1/group2/group3",
+                "userrights": "权限1/权限2/权限3"
+            },
+            {
+                "key": 7,
+                "username": "admin1",
+                "mail": "admin1.qbao.com",
+                "usergroup": "group1/group2/group3",
+                "userrights": "权限1/权限2/权限3"
+            },
+            {
+                "key": 8,
+                "username": "admin1",
+                "mail": "admin1.qbao.com",
+                "usergroup": "group1/group2/group3",
+                "userrights": "权限1/权限2/权限3"
+            },
+            {
+                "key": 9,
+                "username": "admin1",
+                "mail": "admin1.qbao.com",
+                "usergroup": "group1/group2/group3",
+                "userrights": "权限1/权限2/权限3"
+            },
+            {
+                "key": 10,
+                "username": "admin1",
+                "mail": "admin1.qbao.com",
+                "usergroup": "group1/group2/group3",
+                "userrights": "权限1/权限2/权限3"
+            }
+        ],
+        "total": 100
+    },
+    "code": 0,
+    "message": ""
+}
