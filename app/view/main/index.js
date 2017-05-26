@@ -10,6 +10,7 @@ import Headers from '../../components/header'
 import SiderMenu from '../../components/siderMenu'
 import * as RouterConst from '../../static/const/routerConst'
 import { getMenu } from './reducer/action'
+import { getCurrent,getOpenKeys } from '../../components/siderMenu/reducer/action'
 
 import './index.scss'
 
@@ -21,7 +22,9 @@ class App extends React.Component {
     }
 
     componentDidMount() {
-        this.props.getMenu().then((data)=>console.log(data))
+        this.props.getMenu().then((data)=>this.setState({menu:data}))
+        this.props.getCurrent(this.props.location.query.text)
+        this.props.getOpenKeys([this.props.location.query.openKeys])
     }
 
     getSiderMenuByRouter() {
@@ -29,7 +32,7 @@ class App extends React.Component {
             case RouterConst.ROUTER_LOGIN:
                 return ""
             default:
-                return <Sider className="sider"><SiderMenu data={[]} /></Sider>
+                return <Sider className="sider"><SiderMenu data={this.state.menu||""} /></Sider>
         }
     }
 
@@ -63,7 +66,7 @@ let mapStateToProps = state => ({
 })
 
 let mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({ getMenu }, dispatch)
+    return bindActionCreators({ getMenu ,getCurrent,getOpenKeys}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

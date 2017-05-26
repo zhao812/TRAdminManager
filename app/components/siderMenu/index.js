@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Router, Route, IndexRoute, Link ,hashHistory} from 'react-router';
 import { Menu, Icon, Button } from 'antd'
-
+import {getCurrent,getOpenKeys} from './reducer/action'
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
 import './index.scss' 
@@ -17,8 +17,11 @@ class SiderMenu extends React.Component{
         }
     }
     handleMenuClick(e){
+        this.props.getCurrent(e.key)
     }
     componentDidMount(e){
+        this.props.getCurrent('a0')
+        this.props.getOpenKeys(this.props.openKeys)
     }
     onOpenChange(openKeys){
         const state = this.props;
@@ -28,18 +31,15 @@ class SiderMenu extends React.Component{
         if (latestOpenKey) {
         nextOpenKeys = this.getAncestorKeys(latestOpenKey).concat(latestOpenKey);
         }
-        if (latestCloseKey) {
-        nextOpenKeys = this.getAncestorKeys(latestCloseKey);
-    }
+        // if (latestCloseKey) {
+        // nextOpenKeys = this.getAncestorKeys(latestCloseKey);
+    //}
         
         this.props.getOpenKeys(nextOpenKeys)
     }
     
     getAncestorKeys = (key) => {
-        const map = {
-        sub3: ['sub2'],
-        };
-        return map[key] || [];
+        return  [];
     }
     render(){
         const {data} =this.props;
@@ -58,13 +58,13 @@ class SiderMenu extends React.Component{
                     data.data&&data.data.map((item,key)=>(
                         <SubMenu key={'sub'+key}  title={
                             <span>
-                                <Icons name={item.icon}  className="sider_menuicon"/>
+                                <Icon name={item.icon}  className="sider_menuicon"/>
                                 <span>{item.name}</span>
                             </span>}>
                             {
                                 item.children.map((menu,index) => (
-                                    <Menu.Item key={menu.id+index} disabled={menu.id=="d"?true:false}>
-                                        <Link to={menu.url}>{menu.name}</Link>
+                                    <Menu.Item key={menu.id+index} >
+                                        <Link to={{ pathname: menu.url, query: { text: menu.id+index ,openKeys:this.props.openKeys} }}>{menu.name}</Link>
                                     </Menu.Item>
                                 ))
                             }
@@ -80,4 +80,13 @@ class SiderMenu extends React.Component{
 SiderMenu.propTypes = {
 }
 
-export default SiderMenu
+let mapStateToProps = state => ({
+    current:state.sildermenuReduice.current,
+    openKeys:state.sildermenuReduice.openKeys
+})
+
+let mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({ SiderMenu,getCurrent,getOpenKeys }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SiderMenu)

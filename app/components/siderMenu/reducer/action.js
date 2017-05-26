@@ -1,4 +1,3 @@
-import * as HTTPUtil from '../../fetch'
 import * as ActionTypes from './ActionTypes'
 
 

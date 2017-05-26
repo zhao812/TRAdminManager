@@ -2,27 +2,23 @@
     "result": {
         "data":[
             {
-                "icon":"menu1",
+                "icon":"mail",
                 "name":"画像营销",
                 "children":[{
                     "name":"营销活动列表",
-                    "url":"/message",
-                    "icon":"",
+                    "url":"/login",
                     "id":"a"
                 },{
                     "name":"手机短信推送",
-                    "url":"/message/setUpmessage",
-                    "icon":"",
+                    "url":"",
                     "id":"b"
                 },{
                     "name":"H5微信推送",
-                    "url":"/wechart",
-                    "icon":"",
+                    "url":"",
                     "id":"c"
                 },{
                     "name":"APP应用推送（建设中）",
                     "url":"",
-                    "icon":"",
                     "id":"d"
                 }]
             },
@@ -31,13 +27,31 @@
                 "name":"营销设置",
                 "children":[{
                     "name":"设置",
-                    "url":"/message/setUp",
-                    "icon":"",
+                    "url":"",
                     "id":"e"
+                }]
+            },
+            {
+                "icon":"menu2",
+                "name":"营销设置",
+                "children":[{
+                    "name":"设置",
+                    "url":"",
+                    "id":"f"
+                }]
+            },
+            {
+                "icon":"menu2",
+                "name":"营销设置",
+                "children":[{
+                    "name":"设置",
+                    "url":"",
+                    "id":"g"
                 }]
             }
         ]
     },
-    "resultCode": 1,
+    
+    "code": 0,
     "message": ""
 }
