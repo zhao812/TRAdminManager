@@ -1,0 +1,57 @@
+{
+    "result": {
+        "data":[
+            {
+                "icon":"mail",
+                "name":"画像营销",
+                "children":[{
+                    "name":"营销活动列表",
+                    "url":"/login",
+                    "id":"a"
+                },{
+                    "name":"手机短信推送",
+                    "url":"",
+                    "id":"b"
+                },{
+                    "name":"H5微信推送",
+                    "url":"",
+                    "id":"c"
+                },{
+                    "name":"APP应用推送（建设中）",
+                    "url":"",
+                    "id":"d"
+                }]
+            },
+            {
+                "icon":"menu2",
+                "name":"营销设置",
+                "children":[{
+                    "name":"设置",
+                    "url":"",
+                    "id":"e"
+                }]
+            },
+            {
+                "icon":"menu2",
+                "name":"营销设置",
+                "children":[{
+                    "name":"设置",
+                    "url":"",
+                    "id":"f"
+                }]
+            },
+            {
+                "icon":"menu2",
+                "name":"营销设置",
+                "children":[{
+                    "name":"设置",
+                    "url":"",
+                    "id":"g"
+                }]
+            }
+        ]
+    },
+    
+    "code": 0,
+    "message": ""
+}

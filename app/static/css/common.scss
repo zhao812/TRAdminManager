@@ -9,3 +9,10 @@
 .MenuItem{
     padding-left: 24px !important;
 }
+
+.s_table {
+    flex:1;
+    .ant-table-wrapper{
+        margin:10px;
+    }
+}
