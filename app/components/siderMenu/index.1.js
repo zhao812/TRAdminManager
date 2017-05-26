@@ -44,6 +44,7 @@ class SiderMenu extends React.Component{
     render(){
         const {data} =this.props;
         const {openTitle} = this.state;
+        console.log(data,2837)
         return (
              <Menu
                 style={{width:280,flex:'0 0 280px'}} 
@@ -56,11 +57,19 @@ class SiderMenu extends React.Component{
                 defaultSelectedKeys={[this.props.current]}
                 mode="inline" >
                 {
-                    data&&data.map((item,key)=>(
+                    data.data&&data.data.map((item,key)=>(
                         <SubMenu key={'sub'+key} title={
                             <span>
+                                <Icon name={item.icon}  className="sider_menuicon"/>
                                 <span>{item.name}</span>
                             </span>}>
+                            {
+                                item.children.map((menu,index) => (
+                                    <Menu.Item key={menu.id+index} >
+                                        <Link to={{ pathname: menu.url, query: { text: menu.id+index ,openKeys:this.props.openKeys} }}>{menu.name}</Link>
+                                    </Menu.Item>
+                                ))
+                            }
                         </SubMenu>
                     ))
                 }
