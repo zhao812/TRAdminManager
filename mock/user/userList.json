@@ -4,72 +4,92 @@
             {
                 "key": 1,
                 "username": "admin1",
-                "mail": "admin1.qbao.com",
-                "usergroup": "group1/group2/group3",
-                "userrights": "权限1/权限2/权限3"
+                "realName": "姓名",
+                "roleName": "开发",
+                "branchName": "藤榕",
+                "departmentName": "数据中心",
+                "officeName": "上海"
             },
             {
                 "key": 2,
                 "username": "admin1",
-                "mail": "admin1.qbao.com",
-                "usergroup": "group1/group2/group3",
-                "userrights": "权限1/权限2/权限3"
+                "realName": "姓名",
+                "roleName": "开发",
+                "branchName": "藤榕",
+                "departmentName": "数据中心",
+                "officeName": "上海"
             },
             {
                 "key": 3,
                 "username": "admin1",
-                "mail": "admin1.qbao.com",
-                "usergroup": "group1/group2/group3",
-                "userrights": "权限1/权限2/权限3"
+                "realName": "姓名",
+                "roleName": "开发",
+                "branchName": "藤榕",
+                "departmentName": "数据中心",
+                "officeName": "上海"
             },
             {
                 "key": 4,
                 "username": "admin1",
-                "mail": "admin1.qbao.com",
-                "usergroup": "group1/group2/group3",
-                "userrights": "权限1/权限2/权限3"
+                "realName": "姓名",
+                "roleName": "开发",
+                "branchName": "藤榕",
+                "departmentName": "数据中心",
+                "officeName": "上海"
             },
             {
                 "key": 5,
                 "username": "admin1",
-                "mail": "admin1.qbao.com",
-                "usergroup": "group1/group2/group3",
-                "userrights": "权限1/权限2/权限3"
+                "realName": "姓名",
+                "roleName": "开发",
+                "branchName": "藤榕",
+                "departmentName": "数据中心",
+                "officeName": "上海"
             },
             {
                 "key": 6,
                 "username": "admin1",
-                "mail": "admin1.qbao.com",
-                "usergroup": "group1/group2/group3",
-                "userrights": "权限1/权限2/权限3"
+                "realName": "姓名",
+                "roleName": "开发",
+                "branchName": "藤榕",
+                "departmentName": "数据中心",
+                "officeName": "上海"
             },
             {
                 "key": 7,
                 "username": "admin1",
-                "mail": "admin1.qbao.com",
-                "usergroup": "group1/group2/group3",
-                "userrights": "权限1/权限2/权限3"
+                "realName": "姓名",
+                "roleName": "开发",
+                "branchName": "藤榕",
+                "departmentName": "数据中心",
+                "officeName": "上海"
             },
             {
                 "key": 8,
                 "username": "admin1",
-                "mail": "admin1.qbao.com",
-                "usergroup": "group1/group2/group3",
-                "userrights": "权限1/权限2/权限3"
+                "realName": "姓名",
+                "roleName": "开发",
+                "branchName": "藤榕",
+                "departmentName": "数据中心",
+                "officeName": "上海"
             },
             {
                 "key": 9,
                 "username": "admin1",
-                "mail": "admin1.qbao.com",
-                "usergroup": "group1/group2/group3",
-                "userrights": "权限1/权限2/权限3"
+                "realName": "姓名",
+                "roleName": "开发",
+                "branchName": "藤榕",
+                "departmentName": "数据中心",
+                "officeName": "上海"
             },
             {
                 "key": 10,
                 "username": "admin1",
-                "mail": "admin1.qbao.com",
-                "usergroup": "group1/group2/group3",
-                "userrights": "权限1/权限2/权限3"
+                "realName": "姓名",
+                "roleName": "开发",
+                "branchName": "藤榕",
+                "departmentName": "数据中心",
+                "officeName": "上海"
             }
         ],
         "total": 100

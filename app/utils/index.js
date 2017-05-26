@@ -16,7 +16,7 @@ const toExcString = function(array,type={":":"=",",":"&"}){
     return result.substring(-1,result.length-1);
 }
 
-const fetchMsg = (url, param, type = "GET",headers={}, repType="json") => {
+const fetchMsg = (url, param, type = "GET", headers={}, repType="json") => {
     return (dispatch, getState) => {
 
         if(type.toLocaleUpperCase()==="GET"&&size(param)>0){
@@ -28,9 +28,7 @@ const fetchMsg = (url, param, type = "GET",headers={}, repType="json") => {
             'Content-Type': 'application/json',
             "Access-Control-Allow-Methods":"PUT,POST,GET,DELETE,OPTIONS"
         });
-
         return fetch(url, {
-            mode: 'no-cors',
             method: type.toLocaleUpperCase(),
             headers: headers,
             credentials: 'same-origin',
@@ -55,7 +53,7 @@ const fetchMsg = (url, param, type = "GET",headers={}, repType="json") => {
  */
 export function sendMsg(url, param, type = "GET",headers={}, repType="json"){
 
-    url = '/mock'+url+".json"
+    // url = '/mock'+url+".json"
 
     return (dispatch, getState) => {
         

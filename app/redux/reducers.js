@@ -4,3 +4,4 @@
 'use strict'
 export loginReducer from '../view/login/reducer'
 export userReducer from '../view/user/reducer'
+export listReducer from '../view/listView/reducer'

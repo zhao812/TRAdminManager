@@ -1,0 +1,52 @@
+.form-container{
+    padding: 40px;
+    text-align: center;
+
+    .form-div{
+        display: inline-block;
+
+        .form-title{
+            font-size: 18px;
+            text-align: center;
+        }
+
+        .form-item-list{
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .form-item {
+            padding: 5px 0;
+            .form-item-title{
+                display: inline-block;
+                width: 80px;
+                text-align: right;
+                margin-right: 20px;
+            }
+
+            input{
+                width: 200px;
+            }
+
+            textarea{
+                width: 300px;
+                height: 120px;
+                resize: none;
+                vertical-align: top;
+            }
+
+            .form-item-tip{
+                margin-left: 10px;
+                color: red;
+            }
+        }
+
+        .btn-div{
+            text-align: center;
+            margin-top: 20px;
+            button{
+                margin: 0 10px;
+            }
+        }
+    }
+}
