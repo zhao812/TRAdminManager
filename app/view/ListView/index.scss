@@ -1,19 +1,19 @@
-.user-container{
+.list-container{
     padding: 40px;
 
-    .user-title-div{
+    .list-title-div{
         margin-bottom: 20px;
 
-        .user-title{
+        .list-title{
             font-size: 18px;
         }
 
-        .bn-add-user{
+        .bn-add{
             float: right;
         }
     }
 
-    .user-tables{
+    .list-tables{
         .ant-table{
             border: 1px solid #cccccc;
         }

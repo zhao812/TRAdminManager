@@ -13,7 +13,7 @@ export default function update (state = initialState, action){
             }
         
         case ActionTypes.AddMenuData:
-        console.log(action.data)
+        console.log(action.data,55555)
             return { 
                // data:addData(action.data,state)
             }

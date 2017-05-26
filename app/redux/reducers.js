@@ -6,7 +6,8 @@
 export loginReducer from '../view/login/reducer'
 export userReducer from '../view/user/reducer'
 export sildermenuReduice from './../components/siderMenu/reducer'
+
 export authorityReduice from '../view/authority/reducer'
 export MenuReduice from '../view/menuManager/reducer'
 
-
+export listReducer from '../view/listView/reducer'
