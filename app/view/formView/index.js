@@ -9,6 +9,8 @@ import { Layout, Input, Button, Select, Modal } from 'antd'
 
 import { sendFormData, getListDataById, getListParentData } from './reducer/action'
 
+import SelectGroup from './selectGroup'
+
 import * as RouterConst from '../../static/const/routerConst'
 import * as ListConst from '../../static/const/listConst'
 
@@ -35,11 +37,21 @@ class FormView extends React.Component{
         }
         if(listData){
             data = data.map(obj=>{
-                let temp = obj.key.split(".")
-                let value = temp.length > 0 && listData[temp[0]] &&　listData[temp[0]][temp[1]] ? listData[temp[0]][temp[1]] : listData[obj.key]
-                return {
-                    ...obj,
-                    value: value
+                let temp, value
+                if(obj.type == "select-group"){
+                    return {
+                        ...obj,
+                        list: obj.list.map(item=>{
+                            temp = item.key.split(".")
+                            value = temp.length > 0 && listData[temp[0]] &&　listData[temp[0]][temp[1]] ? listData[temp[0]][temp[1]] : listData[item.key]
+                            return {  ...item, value: value }
+                        })
+                    }
+
+                }else{
+                    temp = obj.key.split(".")
+                    value = temp.length > 0 && listData[temp[0]] &&　listData[temp[0]][temp[1]] ? listData[temp[0]][temp[1]] : listData[obj.key]
+                    return {  ...obj, value: value }
                 }
             })
         }
@@ -81,13 +93,19 @@ class FormView extends React.Component{
     }
 
     getAttributesDiv(){
-        return this.state.data.map((obj, key) =>
-            <div key={key} className="form-item">
-                <div className="form-item-title">{obj.title}</div>
-                {this.getComponentByType(obj)}
-                <span className="form-item-tip">{obj.isRequired ? "(必填)" : ""}</span>
-            </div>
-        )
+        return this.state.data.map((obj, key) => {
+            if(obj.type == 'select-group'){
+                return <SelectGroup list={obj.list} data={this.props.parentData[obj.id] || []} onChange={(e)=>console.log(e)} /> 
+            }else{
+                return (
+                    <div key={key} className="form-item">
+                        <div className="form-item-title">{obj.title}</div>
+                        {this.getComponentByType(obj)}
+                        <span className="form-item-tip">{obj.isRequired ? "(必填)" : ""}</span>
+                    </div>
+                )
+            }
+        })
     }
 
     getComponentByType(obj){
