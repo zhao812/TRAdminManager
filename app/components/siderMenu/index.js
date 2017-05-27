@@ -67,9 +67,9 @@ class SiderMenu extends React.Component{
                 {
                     data&&data.map((item,key)=>(
                         <SubMenu key={'sub'+key} title={
-                                <span >
-                                    <span>{item.name}</span>
-                                </span>}>
+                             <span >
+                                <Link to={item.url}><span>{item.name}</span></Link>
+                            </span>}>
                         </SubMenu>
                     ))
                 }

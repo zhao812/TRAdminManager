@@ -162,13 +162,13 @@ class FormView extends React.Component{
         let { Content } = Layout
 
         return(
-            <Content className="form-container">
+            <Content className="wapper_all">
                 <div className="form-div">
-                    <p className="form-title">{this.state.title}</p>
-                    <div className="form-item-list">
+                    <div className="headers"><h6>{this.state.title}</h6></div>
+                    <div className="oTable">
                         {this.getAttributesDiv()}
                     </div>
-                    <div className="btn-div">
+                    <div className="oTable">
                         <Button onClick={()=>this.onClickHandler(true)}>确定</Button>
                         <Button onClick={()=>this.onClickHandler()}>取消</Button>
                     </div>

@@ -98,12 +98,12 @@ class ListView extends React.Component {
         let { Content } = Layout
         let { title, bnAddTitle, loading, pagination, columns } = this.state
         return (
-            <Content className="list-container">
-                <div className="list-title-div">
-                    <span className="list-title">{title}</span>
-                    <Button className="bn-add" onClick={()=>this.onAddHandler()}>{bnAddTitle}</Button>
+            <Content className="wapper_all">
+                <div className="headers">
+                    <h6 className="title">{title}</h6>
+                    <Button className="headersButton" onClick={()=>this.onAddHandler()}>{bnAddTitle}</Button>
                 </div>
-                <Table className="list-tables"
+                <Table className="oTable"
                     columns={columns}
                     dataSource={this.props.listData}
                     pagination={pagination}
