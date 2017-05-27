@@ -533,7 +533,7 @@ export const tableList = {
             },
             {
                 title: '类型',
-                dataIndex: 'type'
+                dataIndex: 'type.name'
             },
             {
                 title: '创建者',
@@ -546,7 +546,7 @@ export const tableList = {
         ],
         urlApi: {
             list: {
-                api: "/api/sys/db/permissions/find",
+                api: "/api/sys/v1/permissions/find",
                 type: "GET"
             },
             add: {
@@ -584,7 +584,7 @@ export const tableList = {
                 type: "select",
                 placeholder: "",
                 isRequired: true,
-                key: "type",
+                key: "type._id",
                 value: ""
             }
         ],
@@ -604,7 +604,7 @@ export const tableList = {
                 type: "select",
                 placeholder: "",
                 isRequired: true,
-                key: "type",
+                key: "type._id",
                 value: ""
             }
         ]

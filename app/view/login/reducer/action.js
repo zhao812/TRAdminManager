@@ -19,13 +19,13 @@ const receiveData = data => ({
  @password 密码
 */
 export const userLogin = (userName, password) => dispatch => {
-    let url = "/index/login"
+    let url = "/api/sys/v1/user/login"
     let opt = {
-        j_username: userName,
-        j_password: MD5(password)
+        username: userName,
+        password: password
     }
 
-    dispatch(utils.sendMsg(url, opt)).then(data => {
+    dispatch(utils.sendMsg(url, opt, "POST")).then(data => {
         dispatch({
             type: ActionType.INIT_USER_LOGIN,
             data: data
