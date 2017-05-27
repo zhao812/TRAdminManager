@@ -6,7 +6,7 @@ import { Layout, Table, Button, Modal ,Input} from 'antd'
 import {menuManage,addMenu,changName,oEditor,oDelete} from './reducer/action'
 
 import './index.scss'
-
+const confirm = Modal.confirm;
 class MenuManager extends React.Component {
     constructor(props) {
     super(props)
@@ -16,6 +16,8 @@ class MenuManager extends React.Component {
            columns : [
                {title: '编号 ',dataIndex: '_id',key: '_id'},
                {title: '菜单名称',dataIndex: 'name',key: 'name'},
+               {title: 'prevId',dataIndex: 'prevId',key: 'prevId'},
+               {title: '菜单链接',dataIndex: 'url',key: 'url'},
                {title: '创建者',dataIndex: 'createBy',key: 'createBy'},
                {title: '创建时间',dataIndex: 'createTime',key: 'createTime'},
                {title: '状态',dataIndex: 'status',key: 'status'},
@@ -36,20 +38,26 @@ class MenuManager extends React.Component {
         this.setState({
             showWindow:1,
             type:'modfied',
-            menuName:text[0].name,
+            menuname:text[0].name,
+            menuurl:text[0].url,
             id:text[0]._id
         })
     }
     handlerDelete(text){
         const _this=this;
-         this.props.oDelete(text[0]._id).then(
-           Modal.success({
-                title: '删除成功',
-                onOk:function(){
-                    _this.props.menuManage()
-                }
-            })
-       )
+        confirm({
+            title: '确认是否删除'+text[0].name,
+            onOk() {
+                 _this.props.oDelete(text[0]._id).then(
+                    Modal.success({
+                            title: '删除成功',
+                            onOk:function(){
+                                _this.props.menuManage()
+                            }
+                        })
+                )
+            },
+        });
     }
     componentDidMount() {
         this.props.menuManage()
@@ -64,27 +72,28 @@ class MenuManager extends React.Component {
     }
 
     handlerNewMenu(e){
+        const {type,name,url,id,menuname,menuurl,prevId,menuprevId} = this.state;
         this.setState({
             showWindow:0
         })
         
         const _this=this;
-        this.state.type=="add"?
-        this.props.addMenu(this.state.name).then(
-           Modal.success({
-                title: '添加成功',
-                onOk:function(){
-                    _this.props.menuManage()
-                }
-            })
+        type=="add"?
+        this.props.addMenu(name,url,prevId).then(
+        //    Modal.success({
+        //         title: '添加成功',
+        //         onOk:function(){
+        //             _this.props.menuManage()
+        //         }
+        //     })
        ):
-       this.props.oEditor(this.state.id,this.state.menuName).then(
-           Modal.success({
-                title: '修改成功',
-                onOk:function(){
-                    _this.props.menuManage()
-                }
-            })
+       this.props.oEditor(id,menuname,menuurl,menuprevId).then(
+        //    Modal.success({
+        //         title: '修改成功',
+        //         onOk:function(){
+        //             _this.props.menuManage()
+        //         }
+        //     })
        )
     }
     handlerCancel(e){
@@ -93,21 +102,28 @@ class MenuManager extends React.Component {
         })
     }
 
-    addMenuName(e){
+    addMenuName(msg,e){
         const {type} =this.state;
         if(type=='add'){
-            this.setState({
-                name:e.target.value
-            })
+            // this.setState({
+            //     name:e.target.value
+            // })
+            let state={};
+            state[msg]=e.currentTarget.value;
+            this.setState(state);
         }else{
-            this.setState({
-                menuName:e.target.value
-            })
+            // this.setState({
+            //     menuName:e.target.value
+            // })
+            let state={};
+            state["menu"+msg]=e.target.value;
+            this.setState(state);
         }
             
     }
     render() {
-        const {showWindow ,type,menuName,name} =this.state;
+        const {showWindow ,type,menuname,name,url,menuurl,prevId,menuprevId} =this.state;
+        console.log(this.state)
         return (
             <div className="wapper_all">
                  <div className={showWindow==0?"oWindow":"oWindow showoWindow"}>
@@ -116,8 +132,13 @@ class MenuManager extends React.Component {
                          <div className="headers">{type=="add"?"新建菜单":"修改菜单"}</div>
                          <div className="oContent">
                              <div className="oLabel">
-                                 <span>菜单名称</span><Input onChange={this.addMenuName.bind(this)} value={type=='add'?name:menuName}/>
-                                
+                                 <span>菜单名称</span><Input onChange={this.addMenuName.bind(this,['name'])} value={type=='add'?name:menuname}/>
+                             </div>
+                             <div className="oLabel">
+                                 <span>菜单链接</span><Input onChange={this.addMenuName.bind(this,['url'])} value={type=='add'?url:menuurl}/>
+                             </div>
+                             <div className="oLabel">
+                                 <span>prevId</span><Input onChange={this.addMenuName.bind(this,['prevId'])} value={type=='add'?prevId:menuprevId}/>
                              </div>
                          </div>
                          <div className="footer">

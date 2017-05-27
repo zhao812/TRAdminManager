@@ -12,14 +12,14 @@ const addMenuData = data => ({
     type : ActionTypes.AddMenuData,
     data : data
 })
-export const addMenu = (name) => dispatch => {
+export const addMenu = (name,iurl,prevId) => dispatch => {
     let url = "/api/sys/db/menu/add";
-    return dispatch(Fetches.sendMsg(url, {"name":name},'POST'))
+    return dispatch(Fetches.sendMsg(url, {"name":name,"url":iurl,"prevId":prevId},'POST'))
 }
-export const oEditor = (id,name) => dispatch => {
+export const oEditor = (id,name,iurl,prevId) => dispatch => {
     let url = "/api/sys/db/menu/up";
     console.log(name,id,13737744)
-    return dispatch(Fetches.sendMsg(url, {"_id":id,"name":name},'PUT'))
+    return dispatch(Fetches.sendMsg(url, {"_id":id,"name":name,"url":iurl,"prevId":prevId},'PUT'))
 }
 export const oDelete = (id) => dispatch => {
     let url = "/api/sys/db/menu/"+id;
