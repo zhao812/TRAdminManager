@@ -10,12 +10,12 @@ export const menuManage = () => dispatch => {
 }
 export const addMenu = (name,iurl,prevId,role) => dispatch => {
     let url = "/api/sys/db/menu/add";
-    let ops=prevId?{"name":name,"url":iurl,"prevId":prevId,"role":role}:{"name":name,"url":iurl,"role":role};
+    let ops=prevId?{"name":name,"url":iurl,"prevId":prevId,"permissions":role}:{"name":name,"url":iurl,"permissions":role};
     return dispatch(Fetches.sendMsg(url, ops,'POST'))
 }
 export const oEditor = (id,name,iurl,prevId,role) => dispatch => {
     let url = "/api/sys/db/menu/up";
-    let ops=prevId?{"_id":id,"name":name,"url":iurl,"prevId":prevId,"role":role}:{"_id":id,"name":name,"url":iurl,"role":role};
+    let ops=prevId?{"_id":id,"name":name,"url":iurl,"prevId":prevId,"permissions":role}:{"_id":id,"name":name,"url":iurl,"permissions":role};
     return dispatch(Fetches.sendMsg(url, ops,'PUT'))
 }
 export const oDelete = (id) => dispatch => {
@@ -30,7 +30,16 @@ const roleData = data => ({
 })
 export const getRole = () => dispatch => {
     let url = "api/sys/db/permissions/find";
-    return dispatch(Fetches.sendMsg(url,{"type":"59291c4c582c2014e271a322"},'GET')).then((data)=>dispatch(roleData(data)))
+    return dispatch(Fetches.sendMsg(url,{},'GET')).then((data)=>dispatch(roleData(data)))
+}
+
+const prevData = data => ({
+    type : ActionTypes.PrevData,
+    data : data
+})
+export const getPrevData = () => dispatch => {
+    let url = "api/sys/db/menu/find";
+    return dispatch(Fetches.sendMsg(url,{},'GET')).then((data)=>dispatch(prevData(data)))
 }
 
 

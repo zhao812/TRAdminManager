@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Layout, Table, Button, Modal ,Input,Select} from 'antd'
 
-import {menuManage,addMenu,changName,oEditor,oDelete,getRole} from './reducer/action'
+import {menuManage,addMenu,changName,oEditor,oDelete,getRole,getPrevData} from './reducer/action'
 
 import './index.scss'
 const Option = Select.Option;
@@ -17,7 +17,7 @@ class MenuManager extends React.Component {
            columns : [
                {title: '编号 ',dataIndex: '_id',key: '_id'},
                {title: '菜单名称',dataIndex: 'name',key: 'name'},
-               {title: 'prevId',dataIndex: 'prevId',key: 'prevId'},
+               {title: '上级菜单',dataIndex: 'prevId',key: 'prevId'},
                {title: '菜单链接',dataIndex: 'url',key: 'url'},
                {title: '创建者',dataIndex: 'createBy',key: 'createBy'},
                {title: '创建时间',dataIndex: 'createTime',key: 'createTime'},
@@ -42,7 +42,8 @@ class MenuManager extends React.Component {
             menuname:text[0].name,
             menuurl:text[0].url,
             id:text[0]._id,
-            menuprevId:text[0].prevId
+            menuprevId:text[0].prevId,
+            menurole:text[0].permissions,
         })
     }
     handlerDelete(text){
@@ -64,6 +65,7 @@ class MenuManager extends React.Component {
     componentDidMount() {
         this.props.menuManage();
         this.props.getRole();
+        this.props.getPrevData();
     }
 
     handlerNew(e){
@@ -126,6 +128,7 @@ class MenuManager extends React.Component {
         rule&&rule.map((item,index)=> {
             children.push(<Option key={item._id}>{item.name}</Option>);
         });
+        console.log(this.state)
         return (
             <div className="wapper_all">
                  <div className={showWindow==0?"oWindow":"oWindow showoWindow"}>
@@ -140,11 +143,11 @@ class MenuManager extends React.Component {
                                  <span>菜单链接</span><Input onChange={this.addMenuName.bind(this,['url'])} value={type=='add'?url:menuurl}/>
                              </div>
                              <div className="oLabel">
-                                 <span>prevId</span><Input onChange={this.addMenuName.bind(this,['prevId'])} value={type=='add'?prevId:menuprevId}/>
+                                 <span>上级菜单</span><Input onChange={this.addMenuName.bind(this,['prevId'])} value={type=='add'?prevId:menuprevId}/>
                              </div>
                              <div className="oLabel">
                                  <span>用户权限</span>
-                                 <Select   onChange={this.handlerChanges.bind(this,['role'])} style={{width:200}} value={type=='add'?role:menurole} >
+                                 <Select mode="multiple"  onChange={this.handlerChanges.bind(this,['role'])} style={{width:200}} value={type=='add'?role:menurole} >
                                     {children}
                                  </Select>
                              </div>
@@ -174,7 +177,7 @@ let mapStateToProps = state => ({
 })
 
 let mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({ menuManage,addMenu ,oEditor,oDelete,getRole}, dispatch)
+    return bindActionCreators({ menuManage,addMenu ,oEditor,oDelete,getRole,getPrevData}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MenuManager)

@@ -1,7 +1,8 @@
 import * as ActionTypes from './ActionTypes'
 const initialState = {
     data:[],
-    rule:""
+    rule:"",
+    prevData:""
 }
 
 export default function update (state = initialState, action){
@@ -15,6 +16,11 @@ export default function update (state = initialState, action){
             return{
                 ...state,
                 rule:action.data
+            }
+        case ActionTypes.PrevData:
+            return{
+                ...state,
+                prevData:action.data
             }
         default:
             return state
