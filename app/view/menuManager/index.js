@@ -3,7 +3,8 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Layout, Table, Button, Modal ,Input,Select} from 'antd'
 
-import {menuManage,addMenu,changName,oEditor,oDelete,getRole,getPrevData} from './reducer/action'
+import {addMenu,changName,oEditor,oDelete,getRole,getPrevData} from './reducer/action'
+import {getMenuData} from '../../components/siderMenu/reducer/action'
 
 import './index.scss'
 const Option = Select.Option;
@@ -47,7 +48,7 @@ class MenuManager extends React.Component {
         })
     }
     handlerDelete(text){
-        const _this=this;
+        const _this = this;
         confirm({
             title: '确认是否删除'+text[0].name,
             onOk() {
@@ -63,7 +64,6 @@ class MenuManager extends React.Component {
         });
     }
     componentDidMount() {
-        this.props.menuManage();
         this.props.getRole();
         this.props.getPrevData();
     }
@@ -172,7 +172,7 @@ MenuManager.PropTypes = {
 }
 
 let mapStateToProps = state => ({
-    data: state.MenuReduice.data,
+    data: state.sildermenuReduice.menuList,
     rule: state.MenuReduice.rule
 })
 

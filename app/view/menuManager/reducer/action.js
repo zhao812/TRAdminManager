@@ -4,10 +4,7 @@ const getMenuData = data => ({
     type : ActionTypes.Get_Menu_Data,
     data : data
 })
-export const menuManage = () => dispatch => {
-    let url = "/api/sys/db/menu/find";
-    dispatch(Fetches.sendMsg(url, null)).then((data)=>dispatch(getMenuData(data)))
-}
+
 export const addMenu = (name,iurl,prevId,role) => dispatch => {
     let url = "/api/sys/db/menu/add";
     let ops=prevId?{"name":name,"url":iurl,"prevId":prevId,"permissions":role}:{"name":name,"url":iurl,"permissions":role};

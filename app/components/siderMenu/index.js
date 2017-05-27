@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Router, Route, IndexRoute, Link ,hashHistory} from 'react-router';
 import { Menu, Icon, Button } from 'antd'
-import {getCurrent,getOpenKeys} from './reducer/action'
+import {getCurrent,getOpenKeys,getMenuData} from './reducer/action'
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
 import './index.scss' 
@@ -20,6 +20,7 @@ class SiderMenu extends React.Component{
         this.props.getCurrent(e.key)
     }
     componentDidMount(e){
+        this.props.getMenuData()
         this.props.getCurrent('a0')
         this.props.getOpenKeys(this.props.openKeys)
     }
@@ -45,14 +46,6 @@ class SiderMenu extends React.Component{
         const {data} =this.props;
         const {openTitle} = this.state;
         
-        let json=[]
-        
-        data.map((item,key)=>{
-            if(!item.prevId){
-               json[key]={"name":item.name}
-            }
-        })
-        console.log(json)
         return (
              <Menu
                 style={{width:280,flex:'0 0 280px'}} 
@@ -80,15 +73,17 @@ class SiderMenu extends React.Component{
 
 
 SiderMenu.propTypes = {
+    data: PropTypes.array.isRequired
 }
 
 let mapStateToProps = state => ({
     current:state.sildermenuReduice.current,
-    openKeys:state.sildermenuReduice.openKeys
+    openKeys:state.sildermenuReduice.openKeys,
+    data: state.sildermenuReduice.menuList
 })
 
 let mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({ SiderMenu,getCurrent,getOpenKeys }, dispatch)
+    return bindActionCreators({ SiderMenu,getCurrent,getOpenKeys, getMenuData }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SiderMenu)

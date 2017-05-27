@@ -1,4 +1,5 @@
 import * as ActionTypes from './ActionTypes'
+import * as utils from '../../../utils'
 
 
 export const getCurrent =(current) => dispatch => {
@@ -12,4 +13,13 @@ export const getOpenKeys =(openKeys) => dispatch => {
         type : ActionTypes.GetOpenKeys,
         openKeys: openKeys
     })
+}
+
+let reveiveData = data => ({
+    type: ActionTypes.INIT_MENU_LIST,
+    data: data
+})
+export const getMenuData = () => dispatch => {
+    let url = "/api/sys/db/menu/find";
+    dispatch(utils.sendMsg(url, null)).then((data)=>dispatch(reveiveData(data)))
 }
