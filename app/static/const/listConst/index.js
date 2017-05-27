@@ -428,6 +428,12 @@ export const tableList = {
                 dataIndex: 'name',
             },
             {
+                title: "角色",
+                render: (text, record) => (
+                    <span>{record.roles.join("/")}</span>
+                )
+            },
+            {
                 title: '创建者',
                 dataIndex: 'createBy',
             },
@@ -453,7 +459,12 @@ export const tableList = {
                 api: "/api/sys/db/usergroup/up",
                 type: "PUT"
             },
-            form: null
+            form: {
+                roles: {
+                    api: "/api/sys/db/role/find",
+                    type: "GET"
+                }
+            }
         },
         add: [
             {
@@ -463,6 +474,14 @@ export const tableList = {
                 placeholder: "",
                 isRequired: true,
                 key: "name",
+                value: ""
+            },
+            {
+                id: "roles",
+                title: "角色",
+                type: "select-multiple",
+                placeholder: "",
+                key: "roles",
                 value: ""
             }
         ],
@@ -475,15 +494,23 @@ export const tableList = {
                 isRequired: true,
                 key: "name",
                 value: ""
+            },
+            {
+                id: "roles",
+                title: "角色",
+                type: "select-multiple",
+                placeholder: "",
+                key: "roles",
+                value: ""
             }
         ]
     },
 
     role: {
-        title: "职位列表",
+        title: "角色列表",
         subTitle: {
-            add: "新增职位",
-            edit: "修改职位信息"
+            add: "新增角色",
+            edit: "修改角色"
         },
         columns: [
             {
