@@ -22,9 +22,9 @@ class App extends React.Component {
     }
 
     componentDidMount() {
-        this.props.getMenu().then((data)=>this.setState({menu:data}))
-        this.props.getCurrent(this.props.location.query.text)
-        this.props.getOpenKeys([this.props.location.query.openKeys])
+      //  this.props.getMenu().then((data)=>this.setState({menu:data}))
+      //  this.props.getCurrent(this.props.location.query.text)
+      //  this.props.getOpenKeys([this.props.location.query.openKeys])
     }
 
     getSiderMenuByRouter() {
@@ -32,7 +32,7 @@ class App extends React.Component {
             case RouterConst.ROUTER_LOGIN:
                 return ""
             default:
-                return <Sider className="sider"><SiderMenu data={this.state.menu||""} /></Sider>
+                return <Sider className="sider"><SiderMenu data={this.props.data||""} /></Sider>
         }
     }
 
@@ -63,6 +63,7 @@ App.PropTypes = {
 }
 
 let mapStateToProps = state => ({
+    data:state.MenuReduice.data
 })
 
 let mapDispatchToProps = (dispatch) => {

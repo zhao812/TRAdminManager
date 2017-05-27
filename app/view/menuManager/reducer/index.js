@@ -2,20 +2,19 @@ import * as ActionTypes from './ActionTypes'
 const initialState = {
     data:[]
 }
-function addData(data,state){
-    state.push(data)
-}
+
 export default function update (state = initialState, action){
     switch(action.type){
         case ActionTypes.Get_Menu_Data:
             return { 
+                ...state,
                 data:action.data
             }
         
-        case ActionTypes.AddMenuData:
-        console.log(action.data,55555)
-            return { 
-               // data:addData(action.data,state)
+        case ActionTypes.Changes_Menu_Name:
+            return{
+                ...state,
+                name:action.name
             }
         default:
             return state

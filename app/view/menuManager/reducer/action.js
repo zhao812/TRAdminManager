@@ -12,8 +12,18 @@ const addMenuData = data => ({
     type : ActionTypes.AddMenuData,
     data : data
 })
-export const addMenu = (data) => dispatch => {
+export const addMenu = (name) => dispatch => {
     let url = "/api/sys/db/menu/add";
-    dispatch(Fetches.sendMsg(url, data,'POST')).then((data)=>dispatch(addMenuData(data)))
+    return dispatch(Fetches.sendMsg(url, {"name":name},'POST'))
 }
+export const oEditor = (id,name) => dispatch => {
+    let url = "/api/sys/db/menu/up";
+    console.log(name,id,13737744)
+    return dispatch(Fetches.sendMsg(url, {"_id":id,"name":name},'PUT'))
+}
+export const oDelete = (id) => dispatch => {
+    let url = "/api/sys/db/menu/"+id;
+    return dispatch(Fetches.sendMsg(url,{},'DELETE'))
+}
+
 
