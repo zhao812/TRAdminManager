@@ -7,7 +7,6 @@ const Login = cb => require.ensure([], require => { cb(null, require('../view/lo
 const User = cb => require.ensure([], require => { cb(null, require('../view/user').default)}, "User")
 
 const MenuManage = cb => require.ensure([], require => { cb(null, require('../view/menuManager').default)}, "MenuManage")
-const Authority = cb => require.ensure([], require => { cb(null, require('../view/Authority').default)}, "Authority")
 
 const FormView = cb => require.ensure([], require => { cb(null, require('../view/formView').default)}, "User")
 const ListView = cb => require.ensure([], require => { cb(null, require('../view/listView').default)}, "ListView")

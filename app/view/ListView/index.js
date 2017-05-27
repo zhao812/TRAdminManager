@@ -71,6 +71,7 @@ class ListView extends React.Component {
     }
 
     onPageChange(pagination) {
+        this.setState({pagination: pagination})
         // this.sendData(pagination)
     }
 

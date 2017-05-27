@@ -5,9 +5,9 @@ import React, { PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { hashHistory } from 'react-router'
-import { Layout, Input, Button, Modal } from 'antd'
+import { Layout, Input, Button, Select, Modal } from 'antd'
 
-import { sendFormData, getListDataById } from './reducer/action'
+import { sendFormData, getListDataById, getListParentData } from './reducer/action'
 
 import * as RouterConst from '../../static/const/routerConst'
 import * as ListConst from '../../static/const/listConst'
@@ -34,10 +34,14 @@ class FormView extends React.Component{
             listData = this.props.getListDataById(id)
         }
         if(listData){
-            data = data.map(obj=>({
-                ...obj,
-                value: listData[obj.id]
-            }))
+            data = data.map(obj=>{
+                let temp = obj.key.split(".")
+                let value = temp.length > 0 && listData[temp[0]] &&　listData[temp[0]][temp[1]] ? listData[temp[0]][temp[1]] : listData[obj.key]
+                return {
+                    ...obj,
+                    value: value
+                }
+            })
         }
         
         this.setState({
@@ -46,10 +50,23 @@ class FormView extends React.Component{
             title: obj.subTitle[action], 
             data: data
         })
+
+        let formApis = obj.urlApi["form"]
+        for(let key in formApis){
+            this.props.getListParentData(key, formApis[key].api, {}, formApis[key].type)
+        }
     }
 
-    onChangeHandler(e, id){
+    onInputChangeHandler(e, id){
         let value = e.currentTarget.value.replace(/\s/g,'')
+        this.setChangeValue(value, id)
+    }
+
+    onSelectChangeHandler(value, id){
+        this.setChangeValue(value, id)
+    }
+
+    setChangeValue(value, id){
         let data = this.state.data.map(obj => {
             if(obj.id == id){
                 return {
@@ -68,7 +85,7 @@ class FormView extends React.Component{
             <div key={key} className="form-item">
                 <div className="form-item-title">{obj.title}</div>
                 {this.getComponentByType(obj)}
-                <span className="form-item-tip">{this.props.params == "add" &&　obj.isRequired ? "(必填)" : ""}</span>
+                <span className="form-item-tip">{this.props.params.action == "add" &&　obj.isRequired ? "(必填)" : ""}</span>
             </div>
         )
     }
@@ -78,7 +95,14 @@ class FormView extends React.Component{
             case "textarea":
             case "password":
             case "text":
-                return <Input type={obj.type} placeholder={obj.placeholder} value={obj.value || ""} maxLength={obj.maxLength} onChange={(e)=>this.onChangeHandler(e, obj.id)} />
+                return <Input type={obj.type} placeholder={obj.placeholder} value={obj.value || ""} maxLength={obj.maxLength} onChange={(e)=>this.onInputChangeHandler(e, obj.id)} />
+            case "select":
+                let Option = Select.Option
+                return (
+                    <Select placeholder={obj.placeholder} value={obj.value || ""} onChange={(e)=>this.onSelectChangeHandler(e, obj.id)}>
+                        {(this.props.parentData[obj.id] || []).map((d, index)=><Option key={d._id}>{d.name}</Option>)}
+                    </Select>
+                )
             default:
                 return ""
         }
@@ -88,9 +112,14 @@ class FormView extends React.Component{
         let result = {message: "", data: {}}, {data} = this.state
         for(let i=0; i<data.length; i++){
             let obj = data[i]
-            if(obj.isRequired && obj.value == ""){
-                result.message = obj.name + "不能为空！"
-                return result
+            if(obj.isRequired){
+                if(obj.value == ""){
+                    result.message = obj.name + "不能为空！"
+                    return result
+                }else if(obj.minLength && obj.value.length<obj.minLength){
+                    result.message = obj.name + "最少" + obj.minLength + "个字符"
+                    return result
+                }
             }
             result.data[obj.id] = obj.value;
         }
@@ -145,13 +174,15 @@ class FormView extends React.Component{
 }
 
 FormView.PropTypes = {
+    parentData: PropTypes.object.isRequired
 }
 
 let mapStateToProps = state => ({
+    parentData: state.formReducer.parentData
 })
 
 let mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({ sendFormData, getListDataById }, dispatch)
+    return bindActionCreators({ sendFormData, getListDataById, getListParentData }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FormView)
