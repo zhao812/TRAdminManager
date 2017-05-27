@@ -54,7 +54,6 @@ const fetchMsg = (url, param, type = "GET", headers={}, repType="json") => {
 export function sendMsg(url, param, type = "GET",headers={}, repType="json"){
 
     // url = '/mock'+url+".json"
-
     return (dispatch, getState) => {
         
         return new Promise(function(resolve, reject){

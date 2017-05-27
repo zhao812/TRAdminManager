@@ -13,3 +13,31 @@
 .oBg .ant-menu-inline li>.ant-menu-submenu-title{
     color:#030000;
 }
+.ant-layout-sider{
+    flex: 0 0 280px !important;
+}
+.ant-menu-root.ant-menu-inline{
+    min-height:100%;
+    background:#2F3439;
+}
+.ant-menu-inline .ant-menu-submenu-title{
+    height:60px;
+    line-height:60px;
+    border-bottom:1px solid rgba(84,84,84,.17);
+    span{
+        font-size:16px;
+        color:#fff;
+    }
+    &:after{color:#fff;}
+}
+.ant-menu-submenu > .ant-menu,.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected{
+    background:#34383c;
+}
+.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected a{
+    background:#34383c;
+    color:#b4abab;
+}
+
+.ant-menu-item > a{
+    color:#fff;
+}

@@ -6,7 +6,7 @@ const wechatData = data => ({
 })
 
 export const getMenu = () => dispatch => {
-    let url = "/menu/list";
+    let url = "/api/sys/db/menu/find";
     return dispatch(Fetches.sendMsg(url, null))
 }
 
