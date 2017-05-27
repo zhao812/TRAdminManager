@@ -97,10 +97,15 @@ class FormView extends React.Component{
             case "text":
                 return <Input type={obj.type} placeholder={obj.placeholder} value={obj.value || ""} maxLength={obj.maxLength} onChange={(e)=>this.onInputChangeHandler(e, obj.id)} />
             case "select":
-                let Option = Select.Option
                 return (
                     <Select placeholder={obj.placeholder} value={obj.value || ""} onChange={(e)=>this.onSelectChangeHandler(e, obj.id)}>
-                        {(this.props.parentData[obj.id] || []).map((d, index)=><Option key={d._id}>{d.name}</Option>)}
+                        {(this.props.parentData[obj.id] || []).map((d, index)=><Select.Option key={d._id}>{d.name}</Select.Option>)}
+                    </Select>
+                )
+            case "select-multiple":
+                return (
+                    <Select mode="multiple" placeholder={obj.placeholder} value={obj.value || []} onChange={(e)=>this.onSelectChangeHandler(e, obj.id)}>
+                        {(this.props.parentData[obj.id] || []).map((d, index)=>{console.log(d._id, d.name, "9999999999999999999"); return (<Select.Option key={d._id}>{d.name}</Select.Option>)})}
                     </Select>
                 )
             default:
@@ -114,10 +119,10 @@ class FormView extends React.Component{
             let obj = data[i]
             if(obj.isRequired){
                 if(obj.value == ""){
-                    result.message = obj.name + "不能为空！"
+                    result.message = obj.title + "不能为空！"
                     return result
                 }else if(obj.minLength && obj.value.length<obj.minLength){
-                    result.message = obj.name + "最少" + obj.minLength + "个字符"
+                    result.message = obj.title + "最少" + obj.minLength + "个字符"
                     return result
                 }
             }

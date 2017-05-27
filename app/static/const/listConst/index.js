@@ -1,3 +1,5 @@
+import React from 'react'
+
 export const tableList = {
     branch: {
         title: "分公司列表",
@@ -213,6 +215,13 @@ export const tableList = {
                 dataIndex: 'realName',
             },
             {
+                title: '用户组',
+                className: "user-usergroup",
+                render: (text, record) => (
+                    <span>{record.userGroups.join("/")}</span>
+                )
+            },
+            {
                 title: '分公司',
                 dataIndex: 'branchName'
             },
@@ -246,7 +255,12 @@ export const tableList = {
                 api: "/api/sys/db/user/up",
                 type: "PUT"
             },
-            form: null
+            form: {
+                userGroups: {
+                    api: "/api/sys/db/usergroup/find",
+                    type: "GET"
+                }
+            }
         },
         add: [
             {
@@ -277,6 +291,14 @@ export const tableList = {
                 isRequired: true,
                 key: "realName",
                 value: ""
+            },
+            {
+                id: "userGroups",
+                title: "用户组",
+                type: "select-multiple",
+                placeholder: "请选择",
+                key: "userGroups",
+                value: "",
             },
             {
                 id: "branchName",
@@ -342,6 +364,14 @@ export const tableList = {
                 isRequired: true,
                 key: "realName",
                 value: ""
+            },
+            {
+                id: "userGroups",
+                title: "用户组",
+                type: "select-multiple",
+                placeholder: "请选择",
+                key: "userGroups",
+                value: "",
             },
             {
                 id: "branchName",
