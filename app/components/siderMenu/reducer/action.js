@@ -20,6 +20,6 @@ let reveiveData = data => ({
     data: data
 })
 export const getMenuData = () => dispatch => {
-    let url = "/api/sys/db/menu/find";
+    let url = "/api/sys/v1/menu/find";
     dispatch(utils.sendMsg(url, null)).then((data)=>dispatch(reveiveData(data)))
 }
