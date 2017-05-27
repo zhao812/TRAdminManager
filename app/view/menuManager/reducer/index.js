@@ -1,6 +1,7 @@
 import * as ActionTypes from './ActionTypes'
 const initialState = {
-    data:[]
+    data:[],
+    rule:""
 }
 
 export default function update (state = initialState, action){
@@ -10,11 +11,10 @@ export default function update (state = initialState, action){
                 ...state,
                 data:action.data
             }
-        
-        case ActionTypes.Changes_Menu_Name:
+        case ActionTypes.RoleData:
             return{
                 ...state,
-                name:action.name
+                rule:action.data
             }
         default:
             return state

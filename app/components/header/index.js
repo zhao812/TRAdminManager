@@ -32,7 +32,7 @@ class Headers extends React.Component {
                 <div className="logo">藤榕后台管理系统</div>
                 <div className="menu-right">
                     <div className="menu-item">{username}</div>
-                    <div className="menu-item"><Button>退出</Button></div>
+                    <div className="menu-item"><Button className="logoOut">退出</Button></div>
                 </div>
             </Header>
         )

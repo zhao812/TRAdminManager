@@ -44,6 +44,15 @@ class SiderMenu extends React.Component{
     render(){
         const {data} =this.props;
         const {openTitle} = this.state;
+        
+        let json=[]
+        
+        data.map((item,key)=>{
+            if(!item.prevId){
+               json[key]={"name":item.name}
+            }
+        })
+        console.log(json)
         return (
              <Menu
                 style={{width:280,flex:'0 0 280px'}} 
@@ -58,12 +67,9 @@ class SiderMenu extends React.Component{
                 {
                     data&&data.map((item,key)=>(
                         <SubMenu key={'sub'+key} title={
-                            <Link to={item.url}>
-                            <span >
-                                <span>{item.name}</span>
-                            </span>
-                            </Link>
-                            }>
+                                <span >
+                                    <span>{item.name}</span>
+                                </span>}>
                         </SubMenu>
                     ))
                 }

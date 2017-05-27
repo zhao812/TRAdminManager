@@ -85,7 +85,7 @@ class FormView extends React.Component{
             <div key={key} className="form-item">
                 <div className="form-item-title">{obj.title}</div>
                 {this.getComponentByType(obj)}
-                <span className="form-item-tip">{this.props.params.action == "add" &&　obj.isRequired ? "(必填)" : ""}</span>
+                <span className="form-item-tip">{obj.isRequired ? "(必填)" : ""}</span>
             </div>
         )
     }
@@ -114,10 +114,10 @@ class FormView extends React.Component{
             let obj = data[i]
             if(obj.isRequired){
                 if(obj.value == ""){
-                    result.message = obj.name + "不能为空！"
+                    result.message = obj.title + "不能为空！"
                     return result
                 }else if(obj.minLength && obj.value.length<obj.minLength){
-                    result.message = obj.name + "最少" + obj.minLength + "个字符"
+                    result.message = obj.title + "最少" + obj.minLength + "个字符"
                     return result
                 }
             }

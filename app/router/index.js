@@ -31,6 +31,10 @@ const Routers = {
 			getComponent(nextState, cb){ Authority(cb) },
 		},
 		{
+			path: RouterConst.ROUTER_FORM+"/:action/:table",
+			getComponent(nextState, cb){ FormView(cb) },
+		},
+		{
 			path: RouterConst.ROUTER_FORM+"/:action/:table/:id",
 			getComponent(nextState, cb){ FormView(cb) },
 		},

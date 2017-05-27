@@ -1,11 +1,12 @@
 import React, { PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Layout, Table, Button, Modal ,Input} from 'antd'
+import { Layout, Table, Button, Modal ,Input,Select} from 'antd'
 
-import {menuManage,addMenu,changName,oEditor,oDelete} from './reducer/action'
+import {menuManage,addMenu,changName,oEditor,oDelete,getRole} from './reducer/action'
 
 import './index.scss'
+const Option = Select.Option;
 const confirm = Modal.confirm;
 class MenuManager extends React.Component {
     constructor(props) {
@@ -23,7 +24,7 @@ class MenuManager extends React.Component {
                {title: '状态',dataIndex: 'status',key: 'status'},
                {title: '更新者',dataIndex: 'upBy',key: 'upBy'},
                {title: '修改时间',dataIndex: 'upTime',key: 'upTime'},
-               {title: '操作',render:(text,record,index)=>{
+               {title: '操作',key:'use',render:(text,record,index)=>{
                    return(
                        <div>
                             <Button onClick={this.handlerEdit.bind(this,[text])}>编辑</Button>
@@ -40,7 +41,8 @@ class MenuManager extends React.Component {
             type:'modfied',
             menuname:text[0].name,
             menuurl:text[0].url,
-            id:text[0]._id
+            id:text[0]._id,
+            menuprevId:text[0].prevId
         })
     }
     handlerDelete(text){
@@ -60,41 +62,31 @@ class MenuManager extends React.Component {
         });
     }
     componentDidMount() {
-        this.props.menuManage()
+        this.props.menuManage();
+        this.props.getRole();
     }
 
     handlerNew(e){
         this.setState({
             showWindow:1,
             type:'add',
-            name:''
+            name:'',
+            url:'',
+            prevId:''
         })
     }
 
     handlerNewMenu(e){
-        const {type,name,url,id,menuname,menuurl,prevId,menuprevId} = this.state;
+        const {type,name,url,id,menuname,menuurl,prevId,menuprevId,role,menurole} = this.state;
         this.setState({
             showWindow:0
         })
         
-        const _this=this;
-        type=="add"?
-        this.props.addMenu(name,url,prevId).then(
-        //    Modal.success({
-        //         title: '添加成功',
-        //         onOk:function(){
-        //             _this.props.menuManage()
-        //         }
-        //     })
-       ):
-       this.props.oEditor(id,menuname,menuurl,menuprevId).then(
-        //    Modal.success({
-        //         title: '修改成功',
-        //         onOk:function(){
-        //             _this.props.menuManage()
-        //         }
-        //     })
-       )
+        if(type=="add"){
+            this.props.addMenu(name,url,prevId,role).then( ()=>this.props.menuManage() )
+        }else{
+            this.props.oEditor(id,menuname,menuurl,menuprevId,menurole).then(this.props.menuManage())
+        }
     }
     handlerCancel(e){
         this.setState({
@@ -105,25 +97,35 @@ class MenuManager extends React.Component {
     addMenuName(msg,e){
         const {type} =this.state;
         if(type=='add'){
-            // this.setState({
-            //     name:e.target.value
-            // })
             let state={};
             state[msg]=e.currentTarget.value;
             this.setState(state);
         }else{
-            // this.setState({
-            //     menuName:e.target.value
-            // })
             let state={};
             state["menu"+msg]=e.target.value;
             this.setState(state);
         }
             
     }
+    handlerChanges(msg,e){
+        const {type} =this.state;
+        if(type=='add'){
+            let state={};
+            state[msg]=e;
+            this.setState(state);
+        }else{
+            let state={};
+            state["menu"+msg]=e;
+            this.setState(state);
+        }
+    }
     render() {
-        const {showWindow ,type,menuname,name,url,menuurl,prevId,menuprevId} =this.state;
-        console.log(this.state)
+        const {showWindow ,type,menuname,name,url,menuurl,prevId,menuprevId,role,menurole} =this.state;
+        const {rule}=this.props;
+        const children = [];
+        rule&&rule.map((item,index)=> {
+            children.push(<Option key={item._id}>{item.name}</Option>);
+        });
         return (
             <div className="wapper_all">
                  <div className={showWindow==0?"oWindow":"oWindow showoWindow"}>
@@ -139,6 +141,12 @@ class MenuManager extends React.Component {
                              </div>
                              <div className="oLabel">
                                  <span>prevId</span><Input onChange={this.addMenuName.bind(this,['prevId'])} value={type=='add'?prevId:menuprevId}/>
+                             </div>
+                             <div className="oLabel">
+                                 <span>用户权限</span>
+                                 <Select   onChange={this.handlerChanges.bind(this,['role'])} style={{width:200}} value={type=='add'?role:menurole} >
+                                    {children}
+                                 </Select>
                              </div>
                          </div>
                          <div className="footer">
@@ -161,11 +169,12 @@ MenuManager.PropTypes = {
 }
 
 let mapStateToProps = state => ({
-    data: state.MenuReduice.data
+    data: state.MenuReduice.data,
+    rule: state.MenuReduice.rule
 })
 
 let mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({ menuManage,addMenu ,oEditor,oDelete}, dispatch)
+    return bindActionCreators({ menuManage,addMenu ,oEditor,oDelete,getRole}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MenuManager)
