@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Layout, Table, Button, Modal ,Input,Select,TreeSelect} from 'antd'
 
-import {addMenu,changName,oEditor,oDelete,getRole,getPrevData} from './reducer/action'
+import {addMenu,changName,oEditor,oDelete,getRole,getPrevData,menuManage} from './reducer/action'
 import {getMenuData} from '../../components/siderMenu/reducer/action'
 
 import './index.scss'
@@ -38,6 +38,7 @@ class MenuManager extends React.Component {
         }
     }
     handlerEdit(text){
+        console.log(text[0])
         this.setState({
             showWindow:1,
             type:'modfied',
@@ -65,6 +66,10 @@ class MenuManager extends React.Component {
         });
     }
     componentDidMount() {
+        let _this=this;
+        new Promise(function (resolve){
+            _this.props.menuManage()
+        });
         this.props.getRole();
         this.props.getPrevData();
     }
@@ -86,7 +91,7 @@ class MenuManager extends React.Component {
         })
         
         if(type=="add"){
-            this.props.addMenu(name,url,prevId,role).then( ()=>this.props.menuManage() )
+            this.props.addMenu(name,url,prevId,role).then(()=>this.props.menuManage())
         }else{
             this.props.oEditor(id,menuname,menuurl,menuprevId,menurole).then(this.props.menuManage())
         }
@@ -97,7 +102,7 @@ class MenuManager extends React.Component {
         })
     }
 
-    addMenuName(msg,e){
+    handlerChange(msg,e){
         const {type} =this.state;
         if(type=='add'){
             let state={};
@@ -126,15 +131,30 @@ class MenuManager extends React.Component {
         console.log(arguments);
         this.setState({ value });
     }
+    setMenu(json){
+        let menus = []
+        let _this=this;
+        json&&json.map((item,index)=>{
+        item.url?item.url:'/';
+        if(item.childrens && item.childrens.length > 0){
+            menus.push(
+                <TreeNode value={item._id} title={item.name} key={item._id}>
+                     {_this.setMenu(item.childrens)}     
+                </TreeNode>
+            )
+        }else{
+           <TreeNode value={item._id} title={item.name} key={item._id}> </TreeNode>
+         }
+        });
+        return menus
+    }
     render() {
         const {showWindow ,type,menuname,name,url,menuurl,prevId,menuprevId,role,menurole} =this.state;
-        const {rule,prevData}=this.props;
+        const {rule,prevData,data}=this.props;
         const children = [];
         rule&&rule.map((item,index)=> {
             children.push(<Option value={item._id} key={index+""+index}>{item.name}</Option>);
         });
-        const oMenu = [];
-        
         return (
             <div className="wapper_all">
                  <div className={showWindow==0?"oWindow":"oWindow showoWindow"}>
@@ -143,14 +163,20 @@ class MenuManager extends React.Component {
                          <div className="headers">{type=="add"?"新建菜单":"修改菜单"}</div>
                          <div className="oContent">
                              <div className="oLabel">
-                                 <span>菜单名称</span><Input onChange={this.addMenuName.bind(this,['name'])} value={type=='add'?name:menuname}/>
+                                 <span>菜单名称</span><Input onChange={this.handlerChange.bind(this,['name'])} value={type=='add'?name:menuname}/>
                              </div>
                              <div className="oLabel">
-                                 <span>菜单链接</span><Input onChange={this.addMenuName.bind(this,['url'])} value={type=='add'?url:menuurl}/>
+                                 <span>菜单链接</span><Input onChange={this.handlerChange.bind(this,['url'])} value={type=='add'?url:menuurl}/>
                              </div>
                              <div className="oLabel">
                                  <span>上级菜单</span>
-                                 
+                                  <TreeSelect
+                                   allowClear
+                                   treeDefaultExpandAll  
+                                   dropdownStyle={{ maxHeight: 300, overflow: 'auto' }}
+                                   style={{ width: 200 }} value={type=='add'?prevId:menuprevId}  onChange={this.handlerChanges.bind(this,['prevId'])}>
+                                        {this.setMenu(prevData)}
+                                  </TreeSelect>
                              </div>
                              <div className="oLabel">
                                  <span>用户权限</span>
@@ -170,7 +196,10 @@ class MenuManager extends React.Component {
                  <div className="headers"><h6 className="title">菜单管理</h6>
                      <Button className="headersButton" onClick={this.handlerNew.bind(this)}>新建菜单</Button>
                 </div>
-                 <Table className="oTable" dataSource={this.props.data} columns={this.state.columns} /> 
+                 <Table className="oTable"
+                  dataSource={data.result} 
+                  columns={this.state.columns} 
+                  /> 
             </div>
         )
     }
@@ -181,13 +210,13 @@ MenuManager.PropTypes = {
 }
 
 let mapStateToProps = state => ({
-    data: state.sildermenuReduice.menuList,
+    data: state.MenuReduice.data,
     rule: state.MenuReduice.rule,
     prevData: state.MenuReduice.prevData
 })
 
 let mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({ addMenu ,oEditor,oDelete,getRole,getPrevData}, dispatch)
+    return bindActionCreators({ addMenu ,oEditor,oDelete,getRole,getPrevData,menuManage,getMenuData}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MenuManager)

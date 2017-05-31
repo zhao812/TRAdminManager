@@ -7,6 +7,11 @@ const initialState = {
 
 export default function update (state = initialState, action){
     switch(action.type){
+        case ActionTypes.Get_Menu_Data:
+            return{
+                ...state,
+                data:action.data
+            }
         case ActionTypes.RoleData:
             return{
                 ...state,

@@ -4,15 +4,18 @@ const getMenuData = data => ({
     type : ActionTypes.Get_Menu_Data,
     data : data
 })
-
+export const menuManage = () => dispatch => {
+    let url = "/api/sys/db/menu/findByPage";
+    dispatch(Fetches.sendMsg(url, null)).then((data)=>dispatch(getMenuData(data)))
+}
 export const addMenu = (name,iurl,prevId,role) => dispatch => {
     let url = "/api/sys/db/menu/add";
-    let ops=prevId?{"name":name,"url":iurl,"prevId":prevId,"permissions":role}:{"name":name,"url":iurl,"permissions":role};
+    let ops={"name":name,"url":iurl,"prevId":prevId||null,"permissions":role};
     return dispatch(Fetches.sendMsg(url, ops,'POST'))
 }
 export const oEditor = (id,name,iurl,prevId,role) => dispatch => {
     let url = "/api/sys/db/menu/up";
-    let ops=prevId?{"_id":id,"name":name,"url":iurl,"prevId":prevId,"permissions":role}:{"_id":id,"name":name,"url":iurl,"permissions":role};
+    let ops={"_id":id,"name":name,"url":iurl,"prevId":prevId||null,"permissions":role}
     return dispatch(Fetches.sendMsg(url, ops,'PUT'))
 }
 export const oDelete = (id) => dispatch => {
@@ -35,9 +38,11 @@ const prevData = data => ({
     data : data
 })
 export const getPrevData = () => dispatch => {
-    let url = "api/sys/db/menu/find";
+    let url = "api/sys/v1/menu/find";
     return dispatch(Fetches.sendMsg(url,{},'GET')).then((data)=>dispatch(prevData(data)))
 }
+
+
 
 
 
