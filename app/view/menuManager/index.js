@@ -96,7 +96,7 @@ class MenuManager extends React.Component {
             showWindow:0
         })
         
-        if(type=="add"){
+        if(type==="add"){
             this.props.addMenu(name,url,prevId,role).then(()=>this.props.menuManage())
         }else{
             this.props.oEditor(id,menuname,menuurl,menuprevId,menurole).then(this.props.menuManage())
@@ -110,7 +110,7 @@ class MenuManager extends React.Component {
 
     handlerChange(msg,e){
         const {type} =this.state;
-        if(type=='add'){
+        if(type==='add'){
             let state={};
             state[msg]=e.currentTarget.value;
             this.setState(state);
@@ -123,7 +123,7 @@ class MenuManager extends React.Component {
     }
     handlerChanges(msg,e){
         const {type} =this.state;
-        if(type=='add'){
+        if(type==='add'){
             let state={};
             state[msg]=e;
             this.setState(state);
@@ -168,10 +168,10 @@ class MenuManager extends React.Component {
         });
         return (
             <div className="wapper_all">
-                 <div className={showWindow==0?"oWindow":"oWindow showoWindow"}>
+                 <div className={showWindow===0?"oWindow":"oWindow showoWindow"}>
                      <div className="oBg"></div>
                      <div className="sWindow">
-                         <div className="headers">{type=="add"?"新建菜单":"修改菜单"}</div>
+                         <div className="headers">{type==="add"?"新建菜单":"修改菜单"}</div>
                          <div className="oContent">
                              <div className="oLabel">
                                  <span>菜单名称</span><Input onChange={this.handlerChange.bind(this,['name'])} value={type=='add'?name:menuname}/>
@@ -185,7 +185,7 @@ class MenuManager extends React.Component {
                                    allowClear
                                    treeDefaultExpandAll  
                                    dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-                                   style={{ width: 200 }} value={type=='add'?prevId:menuprevId}  
+                                   style={{ width: 200 }} value={type==='add'?prevId:menuprevId}  
                                     onChange={this.handlerChanges.bind(this,['prevId'])}>
                                         {this.setMenu(prevData)}
                                   </TreeSelect>
@@ -194,7 +194,7 @@ class MenuManager extends React.Component {
                                  <span>用户权限</span>
                                  <Select mode="multiple"  
                                         onChange={this.handlerChanges.bind(this,['role'])} 
-                                        style={{width:200}} value={type=='add'?role:menurole} >
+                                        style={{width:200}} value={type==='add'?role:menurole} >
                                     {children}
                                  </Select>
                              </div>
