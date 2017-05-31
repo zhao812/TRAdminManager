@@ -1,13 +1,14 @@
 import React, { PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Layout, Table, Button, Modal ,Input,Select} from 'antd'
+import { Layout, Table, Button, Modal ,Input,Select,TreeSelect} from 'antd'
 
 import {addMenu,changName,oEditor,oDelete,getRole,getPrevData} from './reducer/action'
 import {getMenuData} from '../../components/siderMenu/reducer/action'
 
 import './index.scss'
-const Option = Select.Option;
+const { Option } = Select;
+const TreeNode = TreeSelect.TreeNode;
 const confirm = Modal.confirm;
 class MenuManager extends React.Component {
     constructor(props) {
@@ -121,14 +122,19 @@ class MenuManager extends React.Component {
             this.setState(state);
         }
     }
+    onChange = (value) => {
+        console.log(arguments);
+        this.setState({ value });
+    }
     render() {
         const {showWindow ,type,menuname,name,url,menuurl,prevId,menuprevId,role,menurole} =this.state;
-        const {rule}=this.props;
+        const {rule,prevData}=this.props;
         const children = [];
         rule&&rule.map((item,index)=> {
-            children.push(<Option key={item._id}>{item.name}</Option>);
+            children.push(<Option value={item._id} key={index+""+index}>{item.name}</Option>);
         });
-        console.log(this.state)
+        const oMenu = [];
+        
         return (
             <div className="wapper_all">
                  <div className={showWindow==0?"oWindow":"oWindow showoWindow"}>
@@ -143,11 +149,14 @@ class MenuManager extends React.Component {
                                  <span>菜单链接</span><Input onChange={this.addMenuName.bind(this,['url'])} value={type=='add'?url:menuurl}/>
                              </div>
                              <div className="oLabel">
-                                 <span>上级菜单</span><Input onChange={this.addMenuName.bind(this,['prevId'])} value={type=='add'?prevId:menuprevId}/>
+                                 <span>上级菜单</span>
+                                 
                              </div>
                              <div className="oLabel">
                                  <span>用户权限</span>
-                                 <Select mode="multiple"  onChange={this.handlerChanges.bind(this,['role'])} style={{width:200}} value={type=='add'?role:menurole} >
+                                 <Select mode="multiple"  
+                                        onChange={this.handlerChanges.bind(this,['role'])} 
+                                        style={{width:200}} value={type=='add'?role:menurole} >
                                     {children}
                                  </Select>
                              </div>
@@ -173,11 +182,12 @@ MenuManager.PropTypes = {
 
 let mapStateToProps = state => ({
     data: state.sildermenuReduice.menuList,
-    rule: state.MenuReduice.rule
+    rule: state.MenuReduice.rule,
+    prevData: state.MenuReduice.prevData
 })
 
 let mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({ menuManage,addMenu ,oEditor,oDelete,getRole,getPrevData}, dispatch)
+    return bindActionCreators({ addMenu ,oEditor,oDelete,getRole,getPrevData}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MenuManager)
