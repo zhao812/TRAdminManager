@@ -1,13 +1,14 @@
 import React, { PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Layout, Table, Button, Modal ,Input,Select} from 'antd'
+import { Layout, Table, Button, Modal ,Input,Select,TreeSelect} from 'antd'
 
-import {addMenu,changName,oEditor,oDelete,getRole,getPrevData} from './reducer/action'
+import {addMenu,changName,oEditor,oDelete,getRole,getPrevData,menuManage} from './reducer/action'
 import {getMenuData} from '../../components/siderMenu/reducer/action'
 
 import './index.scss'
-const Option = Select.Option;
+const { Option } = Select;
+const TreeNode = TreeSelect.TreeNode;
 const confirm = Modal.confirm;
 class MenuManager extends React.Component {
     constructor(props) {
@@ -18,12 +19,11 @@ class MenuManager extends React.Component {
            columns : [
                {title: '编号 ',dataIndex: '_id',key: '_id'},
                {title: '菜单名称',dataIndex: 'name',key: 'name'},
-               {title: '上级菜单',dataIndex: 'prevId',key: 'prevId'},
                {title: '菜单链接',dataIndex: 'url',key: 'url'},
-               {title: '创建者',dataIndex: 'createBy',key: 'createBy'},
+            //    {title: '创建者',dataIndex: 'createBy',key: 'createBy'},
                {title: '创建时间',dataIndex: 'createTime',key: 'createTime'},
                {title: '状态',dataIndex: 'status',key: 'status'},
-               {title: '更新者',dataIndex: 'upBy',key: 'upBy'},
+            //    {title: '更新者',dataIndex: 'upBy',key: 'upBy'},
                {title: '修改时间',dataIndex: 'upTime',key: 'upTime'},
                {title: '操作',key:'use',render:(text,record,index)=>{
                    return(
@@ -37,6 +37,7 @@ class MenuManager extends React.Component {
         }
     }
     handlerEdit(text){
+        console.log(text[0])
         this.setState({
             showWindow:1,
             type:'modfied',
@@ -64,9 +65,20 @@ class MenuManager extends React.Component {
         });
     }
     componentDidMount() {
+        this.props.menuManage({ pageSize: 10, currentPage: 1}).then(
+            (data) => {
+                const pagination = { ...this.state.pagination };
+                pagination.total = data.pageInfo.total;
+                this.setState({
+                    data: data.results,
+                    pagination,
+                });
+            }
+        );
         this.props.getRole();
         this.props.getPrevData();
     }
+    
 
     handlerNew(e){
         this.setState({
@@ -85,7 +97,7 @@ class MenuManager extends React.Component {
         })
         
         if(type=="add"){
-            this.props.addMenu(name,url,prevId,role).then( ()=>this.props.menuManage() )
+            this.props.addMenu(name,url,prevId,role).then(()=>this.props.menuManage())
         }else{
             this.props.oEditor(id,menuname,menuurl,menuprevId,menurole).then(this.props.menuManage())
         }
@@ -96,7 +108,7 @@ class MenuManager extends React.Component {
         })
     }
 
-    addMenuName(msg,e){
+    handlerChange(msg,e){
         const {type} =this.state;
         if(type=='add'){
             let state={};
@@ -121,14 +133,39 @@ class MenuManager extends React.Component {
             this.setState(state);
         }
     }
+    onChange = (value) => {
+        console.log(arguments);
+        this.setState({ value });
+    }
+    setMenu(json){
+        return json&&json.map((item,index)=>{
+            if(item.childrens && item.childrens.length > 0){
+                return (
+                    <TreeNode value={item._id} title={item.name} key={item._id}>
+                        {this.setMenu(item.childrens)}    
+                    </TreeNode>
+                )
+            }else{
+                return <TreeNode value={item._id} title={item.name} key={item._id}></TreeNode>
+            }
+        });
+    }
+     handleTableChange = (pagination, filters, sorter) => {
+        const pager = { ...this.state.pagination };
+        pager.current = pagination.current;
+        this.setState({
+          pagination: pager,
+        });
+        this.props.menuManage( { pageSize: 10, currentPage: pager.current })
+    }
     render() {
         const {showWindow ,type,menuname,name,url,menuurl,prevId,menuprevId,role,menurole} =this.state;
-        const {rule}=this.props;
+        const {rule,prevData,data}=this.props;
+        console.log(prevData,22444444)
         const children = [];
         rule&&rule.map((item,index)=> {
-            children.push(<Option key={item._id}>{item.name}</Option>);
+            children.push(<Option value={item._id} key={index+""+index}>{item.name}</Option>);
         });
-        console.log(this.state)
         return (
             <div className="wapper_all">
                  <div className={showWindow==0?"oWindow":"oWindow showoWindow"}>
@@ -137,17 +174,27 @@ class MenuManager extends React.Component {
                          <div className="headers">{type=="add"?"新建菜单":"修改菜单"}</div>
                          <div className="oContent">
                              <div className="oLabel">
-                                 <span>菜单名称</span><Input onChange={this.addMenuName.bind(this,['name'])} value={type=='add'?name:menuname}/>
+                                 <span>菜单名称</span><Input onChange={this.handlerChange.bind(this,['name'])} value={type=='add'?name:menuname}/>
                              </div>
                              <div className="oLabel">
-                                 <span>菜单链接</span><Input onChange={this.addMenuName.bind(this,['url'])} value={type=='add'?url:menuurl}/>
+                                 <span>菜单链接</span><Input onChange={this.handlerChange.bind(this,['url'])} value={type=='add'?url:menuurl}/>
                              </div>
                              <div className="oLabel">
-                                 <span>上级菜单</span><Input onChange={this.addMenuName.bind(this,['prevId'])} value={type=='add'?prevId:menuprevId}/>
+                                 <span>上级菜单</span>
+                                  <TreeSelect
+                                   allowClear
+                                   treeDefaultExpandAll  
+                                   dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                                   style={{ width: 200 }} value={type=='add'?prevId:menuprevId}  
+                                    onChange={this.handlerChanges.bind(this,['prevId'])}>
+                                        {this.setMenu(prevData)}
+                                  </TreeSelect>
                              </div>
                              <div className="oLabel">
                                  <span>用户权限</span>
-                                 <Select mode="multiple"  onChange={this.handlerChanges.bind(this,['role'])} style={{width:200}} value={type=='add'?role:menurole} >
+                                 <Select mode="multiple"  
+                                        onChange={this.handlerChanges.bind(this,['role'])} 
+                                        style={{width:200}} value={type=='add'?role:menurole} >
                                     {children}
                                  </Select>
                              </div>
@@ -161,7 +208,12 @@ class MenuManager extends React.Component {
                  <div className="headers"><h6 className="title">菜单管理</h6>
                      <Button className="headersButton" onClick={this.handlerNew.bind(this)}>新建菜单</Button>
                 </div>
-                 <Table className="oTable" dataSource={this.props.data} columns={this.state.columns} /> 
+                 <Table className="oTable"
+                  dataSource={data.result} 
+                  columns={this.state.columns} 
+                  pagination={this.state.pagination}
+                  onChange={this.handleTableChange}
+                  /> 
             </div>
         )
     }
@@ -172,12 +224,13 @@ MenuManager.PropTypes = {
 }
 
 let mapStateToProps = state => ({
-    data: state.sildermenuReduice.menuList,
-    rule: state.MenuReduice.rule
+    data: state.MenuReduice.data,
+    rule: state.MenuReduice.rule,
+    prevData: state.MenuReduice.prevData
 })
 
 let mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({ menuManage,addMenu ,oEditor,oDelete,getRole,getPrevData}, dispatch)
+    return bindActionCreators({ addMenu ,oEditor,oDelete,getRole,getPrevData,menuManage,getMenuData}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MenuManager)

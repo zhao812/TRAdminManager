@@ -24,48 +24,36 @@ class SiderMenu extends React.Component{
         this.props.getCurrent('a0')
         this.props.getOpenKeys(this.props.openKeys)
     }
-    onOpenChange(openKeys){
-        const state = this.props;
-        const latestOpenKey = openKeys.find(key => !(state.openKeys.indexOf(key) > -1));
-        const latestCloseKey = state.openKeys.find(key => !(openKeys.indexOf(key) > -1));
-        let nextOpenKeys = [];
-        if (latestOpenKey) {
-        nextOpenKeys = this.getAncestorKeys(latestOpenKey).concat(latestOpenKey);
+     setMenu(json){
+        let menus = []
+        let _this=this;
+        json&&json.map((item,index)=>{
+        item.url?item.url:'/';
+        if(item.childrens && item.childrens.length > 0){
+            menus.push(
+            <SubMenu key={'sub'+item._id} title={<span><Icon type="user" />{item.name}</span>}>
+                {_this.setMenu(item.childrens)}   
+            </SubMenu>
+            )
+        }else{
+            if(item.url){
+            menus.push(<Menu.Item key={item._id}><Link to={item.url}>{item.name}</Link></Menu.Item>);
+            }else{
+            menus.push(<Menu.Item key={item._id}>{item.name}</Menu.Item>);
+            }
         }
-        // if (latestCloseKey) {
-        // nextOpenKeys = this.getAncestorKeys(latestCloseKey);
-    //}
-        
-        this.props.getOpenKeys(nextOpenKeys)
-    }
-    
-    getAncestorKeys = (key) => {
-        return  [];
+        });
+        return menus
     }
     render(){
         const {data} =this.props;
         const {openTitle} = this.state;
-        
         return (
              <Menu
                 style={{width:280,flex:'0 0 280px'}} 
-                openKeys={this.props.openKeys}
-                onClick={(e)=>this.handleMenuClick(e)}
-                onOpenChange={(e)=>this.onOpenChange(e)}
                 className="silder"
-                selectedKeys={[this.props.current]}
-                defaultOpenKeys={openTitle}
-                defaultSelectedKeys={[this.props.current]}
                 mode="inline" >
-                {
-                    data&&data.map((item,key)=>(
-                        <SubMenu key={'sub'+key} title={
-                             <span >
-                                <Link to={item.url}><span>{item.name}</span></Link>
-                            </span>}>
-                        </SubMenu>
-                    ))
-                }
+                 {this.setMenu(data)}
             </Menu>
         )
     }
