@@ -19,12 +19,11 @@ class MenuManager extends React.Component {
            columns : [
                {title: '编号 ',dataIndex: '_id',key: '_id'},
                {title: '菜单名称',dataIndex: 'name',key: 'name'},
-               {title: '上级菜单',dataIndex: 'prevId',key: 'prevId'},
                {title: '菜单链接',dataIndex: 'url',key: 'url'},
-               {title: '创建者',dataIndex: 'createBy',key: 'createBy'},
+            //    {title: '创建者',dataIndex: 'createBy',key: 'createBy'},
                {title: '创建时间',dataIndex: 'createTime',key: 'createTime'},
                {title: '状态',dataIndex: 'status',key: 'status'},
-               {title: '更新者',dataIndex: 'upBy',key: 'upBy'},
+            //    {title: '更新者',dataIndex: 'upBy',key: 'upBy'},
                {title: '修改时间',dataIndex: 'upTime',key: 'upTime'},
                {title: '操作',key:'use',render:(text,record,index)=>{
                    return(
@@ -66,13 +65,20 @@ class MenuManager extends React.Component {
         });
     }
     componentDidMount() {
-        let _this=this;
-        new Promise(function (resolve){
-            _this.props.menuManage()
-        });
+        this.props.menuManage({ pageSize: 10, currentPage: 1}).then(
+            (data) => {
+                const pagination = { ...this.state.pagination };
+                pagination.total = data.pageInfo.total;
+                this.setState({
+                    data: data.results,
+                    pagination,
+                });
+            }
+        );
         this.props.getRole();
         this.props.getPrevData();
     }
+    
 
     handlerNew(e){
         this.setState({
@@ -132,25 +138,30 @@ class MenuManager extends React.Component {
         this.setState({ value });
     }
     setMenu(json){
-        let menus = []
-        let _this=this;
-        json&&json.map((item,index)=>{
-        item.url?item.url:'/';
-        if(item.childrens && item.childrens.length > 0){
-            menus.push(
-                <TreeNode value={item._id} title={item.name} key={item._id}>
-                     {_this.setMenu(item.childrens)}     
-                </TreeNode>
-            )
-        }else{
-           <TreeNode value={item._id} title={item.name} key={item._id}> </TreeNode>
-         }
+        return json&&json.map((item,index)=>{
+            if(item.childrens && item.childrens.length > 0){
+                return (
+                    <TreeNode value={item._id} title={item.name} key={item._id}>
+                        {this.setMenu(item.childrens)}    
+                    </TreeNode>
+                )
+            }else{
+                return <TreeNode value={item._id} title={item.name} key={item._id}></TreeNode>
+            }
         });
-        return menus
+    }
+     handleTableChange = (pagination, filters, sorter) => {
+        const pager = { ...this.state.pagination };
+        pager.current = pagination.current;
+        this.setState({
+          pagination: pager,
+        });
+        this.props.menuManage( { pageSize: 10, currentPage: pager.current })
     }
     render() {
         const {showWindow ,type,menuname,name,url,menuurl,prevId,menuprevId,role,menurole} =this.state;
         const {rule,prevData,data}=this.props;
+        console.log(prevData,22444444)
         const children = [];
         rule&&rule.map((item,index)=> {
             children.push(<Option value={item._id} key={index+""+index}>{item.name}</Option>);
@@ -173,8 +184,9 @@ class MenuManager extends React.Component {
                                   <TreeSelect
                                    allowClear
                                    treeDefaultExpandAll  
-                                   dropdownStyle={{ maxHeight: 300, overflow: 'auto' }}
-                                   style={{ width: 200 }} value={type=='add'?prevId:menuprevId}  onChange={this.handlerChanges.bind(this,['prevId'])}>
+                                   dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                                   style={{ width: 200 }} value={type=='add'?prevId:menuprevId}  
+                                    onChange={this.handlerChanges.bind(this,['prevId'])}>
                                         {this.setMenu(prevData)}
                                   </TreeSelect>
                              </div>
@@ -199,6 +211,8 @@ class MenuManager extends React.Component {
                  <Table className="oTable"
                   dataSource={data.result} 
                   columns={this.state.columns} 
+                  pagination={this.state.pagination}
+                  onChange={this.handleTableChange}
                   /> 
             </div>
         )

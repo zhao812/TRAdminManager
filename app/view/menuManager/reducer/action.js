@@ -4,9 +4,14 @@ const getMenuData = data => ({
     type : ActionTypes.Get_Menu_Data,
     data : data
 })
-export const menuManage = () => dispatch => {
-    let url = "/api/sys/db/menu/findByPage";
-    dispatch(Fetches.sendMsg(url, null)).then((data)=>dispatch(getMenuData(data)))
+export const menuManage = (data) => dispatch => {
+    return new Promise((resolve, reject) => {
+        let url = "/api/sys/db/menu/findByPage";
+        dispatch(Fetches.sendMsg(url, data, 'GET')).then(data =>{
+            dispatch(getMenuData(data))
+            resolve&&resolve(data)
+        }, reject)
+    })
 }
 export const addMenu = (name,iurl,prevId,role) => dispatch => {
     let url = "/api/sys/db/menu/add";

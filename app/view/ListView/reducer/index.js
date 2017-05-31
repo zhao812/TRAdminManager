@@ -5,6 +5,7 @@
 import * as ActionType from './actionType'
 
 const initialState = {
+    total: 0,
     listData: [],
 }
 
@@ -13,7 +14,8 @@ export default function update (state = initialState, action){
         case ActionType.INIT_LIST_DATA:
             return {
                 ...state,
-                listData: action.data,
+                total: action.data.pageInfo.total,
+                listData: action.data.result
             }
         default:
             return state

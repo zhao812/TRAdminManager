@@ -25,7 +25,6 @@ class SiderMenu extends React.Component{
         this.props.getOpenKeys(this.props.openKeys)
     }
      setMenu(json){
-         console.log(typeof(json))
         let menus = []
         let _this=this;
         json&&json.map((item,index)=>{
