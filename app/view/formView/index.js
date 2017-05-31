@@ -5,7 +5,7 @@ import React, { PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { hashHistory } from 'react-router'
-import { Layout, Input, Button, Select, Modal, Cascader } from 'antd'
+import { Layout, Input, Button, Select, TreeSelect, Modal, Cascader } from 'antd'
 
 import { sendFormData, getListDataById, getListParentData } from './reducer/action'
 
@@ -40,12 +40,21 @@ class FormView extends React.Component{
                     value = obj.key.map(t => listData[t] || "")
                 }else{
                     temp = obj.key.split(".")
-                    value = temp.length > 0 && listData[temp[0]] &&　listData[temp[0]][temp[1]] ? listData[temp[0]][temp[1]] : listData[obj.key]
+                    if(temp.length > 1 && listData[temp[0]]){
+                        let d = listData[temp[0]]
+                        if(Array.isArray(d)){
+                            value = d.map(c => c[temp[1]] ||　"")
+                        }else{
+                            value = d[temp[1]] || ""
+                        }
+                    }else{
+                        value = listData[obj.key] || ""
+                    }
                 }
                 return { ...obj, value: value} 
             })
         }
-        
+
         this.setState({
             urlApi: obj.urlApi[action].api,
             fetchType: obj.urlApi[action].type,
@@ -84,7 +93,6 @@ class FormView extends React.Component{
 
     getAttributesDiv(){
         return this.state.data.map((obj, key) => {
-            console.log(obj)
             return (
                 <div key={key} className="form-item">
                     <div className="form-item-title">{obj.title}</div>
@@ -113,6 +121,11 @@ class FormView extends React.Component{
                         {(this.props.parentData[obj.id] || []).map((d, index)=><Select.Option key={d._id}>{d.name}</Select.Option>)}
                     </Select>
                 )
+            case "tree-select-multiple":
+                let treeData = this.getTreeSelectData(this.props.parentData[obj.id] || [])
+                return (
+                    <TreeSelect treeData={treeData} mode="multiple" treeCheckable={true} searchPlaceholder={obj.placeholder} value={obj.value || []} onChange={(e)=>this.onSelectChangeHandler(e, obj.id)} />
+                )
             case "cascader":
                 let d = this.props.parentData[obj.id] || []
                 let opt = this.getCascaderOptions(d)
@@ -122,6 +135,21 @@ class FormView extends React.Component{
             default:
                 return ""
         }
+    }
+
+    getTreeSelectData(arr){
+        return arr.map(obj => {
+            let child = obj.departments || []
+            let state = {
+                value: obj._id,
+                label: obj.name,
+                key: obj._id,
+            }
+            if (child.length > 0) {
+                state.children = this.getTreeSelectData(child)
+            }         
+            return state
+        })
     }
 
     getCascaderOptions(array){

@@ -6,13 +6,18 @@ import { hashHistory } from 'react-router'
 import * as utils from '../../../utils'
 import * as ActionType from './actionType'
 
-const receiveData = data => ({
-    type: ActionType.INIT_LIST_DATA,
-    data: data.map((obj, index)=>({
-        ...obj,
-        key: index+1
-    }))
-})
+const receiveData = data => {
+    return {
+        type: ActionType.INIT_LIST_DATA,
+        data: {
+            ...data,
+            result: data.result.map((obj, index)=>({
+                ...obj,
+                key: index+1
+            }))
+        }
+    }
+}
 
 /**
  * 获取用户列表

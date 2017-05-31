@@ -23,7 +23,7 @@ class ListView extends React.Component {
             title: "",
             bnAddTitle: "",
             loading: false,
-            pagination: { pageSize: 10, current: 0 },
+            pagination: { pageSize: 10, current: 1 },
             columns: [],
             urlApi: "",
             fetchType: ""
@@ -52,16 +52,16 @@ class ListView extends React.Component {
 
     sendData(pagination = {}){
         let opt = {
-            page: pagination ? pagination.current : 0,
-            size: pagination ? pagination.pageSize : 10
+            currentPage: pagination ? pagination.current : 1,
+            pageSize: pagination ? pagination.pageSize : 10
         }, { urlApi, fetchType } = this.state
-        this.props.getListData(urlApi, null, fetchType).then(data=>{
+        this.props.getListData(urlApi, opt, fetchType).then(data=>{
             this.setState({
                 loading: false,
                 pagination: {
                     ...pagination,
-                    // current:　pagination.current || 0,
-                    // total: data.total
+                    current:　pagination.current || 0,
+                    total: data.pageInfo.total
                 }
             })
         }, ()=>{
@@ -72,8 +72,8 @@ class ListView extends React.Component {
     }
 
     onPageChange(pagination) {
-        this.setState({pagination: pagination})
-        // this.sendData(pagination)
+        // this.setState({pagination: pagination})
+        this.sendData(pagination)
     }
 
     onAddHandler(){
@@ -118,11 +118,13 @@ class ListView extends React.Component {
 }
 
 ListView.PropTypes = {
-    listData: PropTypes.array.isRequired
+    listData: PropTypes.array.isRequired,
+    pageTotal: PropTypes.number.isRequired
 }
 
 let mapStateToProps = state => ({
-    listData: state.listReducer.listData
+    listData: state.listReducer.listData,
+    pageTotal: state.listReducer.pageTotal,
 })
 
 let mapDispatchToProps = (dispatch) => {

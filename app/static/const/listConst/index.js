@@ -36,7 +36,7 @@ export const tableList = {
         ],
         urlApi: {
             list: {
-                api: "/api/sys/db/branch/find",
+                api: "/api/sys/db/branch/findByPage",
                 type: "GET"
             },
             add: {
@@ -131,7 +131,7 @@ export const tableList = {
         ],
         urlApi: {
             list: {
-                api: "/api/sys/v1/department/list",
+                api: "/api/sys/v1/department/findByPage",
                 type: "GET"
             },
             add: {
@@ -218,7 +218,7 @@ export const tableList = {
                 title: '用户组',
                 className: "user-usergroup",
                 render: (text, record) => (
-                    <span>{record.userGroups.join("/")}</span>
+                    <span>{record.userGroups.map(obj=>obj.name).join("/")}</span>
                 )
             },
             {
@@ -240,7 +240,7 @@ export const tableList = {
         ],
         urlApi: {
             list: {
-                api: "/api/sys/db/user/find",
+                api: "/api/sys/db/user/findByPage",
                 type: "GET"
             },
             add: {
@@ -260,7 +260,7 @@ export const tableList = {
                     api: "/api/sys/db/usergroup/find",
                     type: "GET"
                 },
-                departmentName: {
+                departments: {
                     api: "/api/sys/v1/department/getSelectData",
                     type: "GET"
                 }
@@ -305,12 +305,12 @@ export const tableList = {
                 value: "",
             },
             {
-                id: "departmentName",
+                id: "departments",
                 title: "公司部门",
-                type: 'cascader',
+                type: 'tree-select-multiple',
                 placeholder: "请选择",
                 isRequired: true,
-                key: ["branchName","departmentName"],
+                key: "departments",
                 value: "",
             },
             // {
@@ -365,16 +365,16 @@ export const tableList = {
                 title: "用户组",
                 type: "select-multiple",
                 placeholder: "请选择",
-                key: "userGroups",
+                key: "userGroups._id",
                 value: "",
             },
             {
-                id: "departmentName",
+                id: "departments",
                 title: "公司部门",
-                type: 'cascader',
+                type: 'tree-select-multiple',
                 placeholder: "请选择",
                 isRequired: true,
-                key: ["branchName","departmentName"],
+                key: "departments",
                 value: "",
             },
             // {
@@ -430,7 +430,7 @@ export const tableList = {
         ],
         urlApi: {
             list: {
-                api: "/api/sys/db/usergroup/find",
+                api: "/api/sys/db/usergroup/findByPage",
                 type: "GET"
             },
             add: {
@@ -518,7 +518,7 @@ export const tableList = {
         ],
         urlApi: {
             list: {
-                api: "/api/sys/db/role/find",
+                api: "/api/sys/db/role/findByPage",
                 type: "GET"
             },
             add: {
@@ -589,7 +589,7 @@ export const tableList = {
         ],
         urlApi: {
             list: {
-                api: "/api/sys/v1/permissions/find",
+                api: "/api/sys/v1/permissions/findByPage",
                 type: "GET"
             },
             add: {
