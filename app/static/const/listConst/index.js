@@ -2,10 +2,10 @@ import React from 'react'
 
 export const tableList = {
     branch: {
-        title: "分公司列表",
+        title: "子公司列表",
         subTitle: {
-            add: "新增分公司",
-            edit: "修改分公司信息"
+            add: "新增子公司",
+            edit: "修改子公司信息"
         },
         columns: [
             {
@@ -222,7 +222,7 @@ export const tableList = {
                 )
             },
             {
-                title: '分公司',
+                title: '子公司',
                 dataIndex: 'branchName'
             },
             {
@@ -258,6 +258,10 @@ export const tableList = {
             form: {
                 userGroups: {
                     api: "/api/sys/db/usergroup/find",
+                    type: "GET"
+                },
+                bd: {
+                    api: "/api/sys/v1/department/getSelectData",
                     type: "GET"
                 }
             }
@@ -301,22 +305,30 @@ export const tableList = {
                 value: "",
             },
             {
-                id: "branchName",
-                title: "分公司",
-                type: "text",
-                placeholder: "",
-                isRequired: true,
-                key: "branchName",
-                value: ""
-            },
-            {
-                id: "departmentName",
-                title: "部门",
-                type: "text",
-                placeholder: "",
-                isRequired: true,
-                key: "departmentName",
-                value: ""
+                id: "bd",
+                type: 'select-group',
+                list: [
+                    {
+                        id: "branchName",
+                        title: "子公司",
+                        type: "select",
+                        options: [],
+                        placeholder: "",
+                        isRequired: true,
+                        key: "branchName",
+                        value: ""
+                    },
+                    {
+                        id: "departmentName",
+                        title: "部门",
+                        type: "select",
+                        options: ["departments"],
+                        placeholder: "",
+                        isRequired: true,
+                        key: "departmentName",
+                        value: ""
+                    }
+                ]
             },
             {
                 id: "roleName",
@@ -375,7 +387,7 @@ export const tableList = {
             },
             {
                 id: "branchName",
-                title: "分公司",
+                title: "子公司",
                 type: "text",
                 placeholder: "",
                 isRequired: true,

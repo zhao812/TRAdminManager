@@ -38,6 +38,7 @@ class ListView extends React.Component {
                 ...obj.columns,
                 {
                     title: '操作',
+                    width: 200,
                     render: (text, record) => (
                         <span className="table-btns"><Button onClick={()=>this.onEditHandler(record._id)}>修改</Button><Button onClick={()=>this.onDeleteHandler(record._id)}>删除</Button></span>
                     )
