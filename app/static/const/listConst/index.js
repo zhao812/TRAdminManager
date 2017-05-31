@@ -260,7 +260,7 @@ export const tableList = {
                     api: "/api/sys/db/usergroup/find",
                     type: "GET"
                 },
-                bd: {
+                departmentName: {
                     api: "/api/sys/v1/department/getSelectData",
                     type: "GET"
                 }
@@ -305,40 +305,23 @@ export const tableList = {
                 value: "",
             },
             {
-                id: "bd",
-                type: 'select-group',
-                list: [
-                    {
-                        id: "branchName",
-                        title: "子公司",
-                        type: "select",
-                        options: [],
-                        placeholder: "",
-                        isRequired: true,
-                        key: "branchName",
-                        value: ""
-                    },
-                    {
-                        id: "departmentName",
-                        title: "部门",
-                        type: "select",
-                        options: ["departments"],
-                        placeholder: "",
-                        isRequired: true,
-                        key: "departmentName",
-                        value: ""
-                    }
-                ]
-            },
-            {
-                id: "roleName",
-                title: "职位",
-                type: "text",
-                placeholder: "",
+                id: "departmentName",
+                title: "公司部门",
+                type: 'cascader',
+                placeholder: "请选择",
                 isRequired: true,
-                key: "roleName",
-                value: ""
+                key: ["branchName","departmentName"],
+                value: "",
             },
+            // {
+            //     id: "roleName",
+            //     title: "角色  ",
+            //     type: "text",
+            //     placeholder: "",
+            //     isRequired: true,
+            //     key: "roleName",
+            //     value: ""
+            // },
             {
                 id: "officeName",
                 title: "办公地点",
@@ -386,32 +369,23 @@ export const tableList = {
                 value: "",
             },
             {
-                id: "branchName",
-                title: "子公司",
-                type: "text",
-                placeholder: "",
-                isRequired: true,
-                key: "branchName",
-                value: ""
-            },
-            {
                 id: "departmentName",
-                title: "部门",
-                type: "text",
-                placeholder: "",
+                title: "公司部门",
+                type: 'cascader',
+                placeholder: "请选择",
                 isRequired: true,
-                key: "departmentName",
-                value: ""
+                key: ["branchName","departmentName"],
+                value: "",
             },
-            {
-                id: "roleName",
-                title: "职位",
-                type: "text",
-                placeholder: "",
-                isRequired: true,
-                key: "roleName",
-                value: ""
-            },
+            // {
+            //     id: "roleName",
+            //     title: "角色",
+            //     type: "text",
+            //     placeholder: "",
+            //     isRequired: true,
+            //     key: "roleName",
+            //     value: ""
+            // },
             {
                 id: "officeName",
                 title: "办公地点",
