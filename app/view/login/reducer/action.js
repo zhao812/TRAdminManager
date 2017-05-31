@@ -30,6 +30,6 @@ export const userLogin = (userName, password) => dispatch => {
             type: ActionType.INIT_USER_LOGIN,
             data: data
         })
-        hashHistory.push(RouterConst.ROUTER_HOME)
+        hashHistory.push(RouterConst.ROUTER_LIST + "/user")
     })
 }

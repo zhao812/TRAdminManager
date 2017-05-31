@@ -32,7 +32,7 @@ export const getListData = (url, opt, type) => dispatch => {
 }
 
 let receiveDelData = (list, id) => ({
-    type: ActionType.INIT_LIST_DATA,
+    type: ActionType.DELETE_LIST_DATA,
     data: list.filter(obj=>obj._id != id).map((obj, index)=>({
         ...obj,
         key: index+1

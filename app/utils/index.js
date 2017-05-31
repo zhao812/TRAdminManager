@@ -6,7 +6,9 @@
 'use strict'
 import 'whatwg-fetch'
 import {size, each, assignIn} from "lodash";
+import { hashHistory } from 'react-router'
 import { Modal } from 'antd';
+import * as RouterConst from '../static/const/routerConst'
 
 const toExcString = function(array,type={":":"=",",":"&"}){
     let result ="";
@@ -60,8 +62,11 @@ export function sendMsg(url, param, type = "GET",headers={}, repType="json"){
             
             dispatch(fetchMsg(url, param, type, headers, repType))
             .then(data=>{
-                if(data.code == 0){
+                if(data.code === 0){
                     resolve&&resolve(data.result || null)
+                }else if(data.code === 200){
+                    reject&&reject(data)
+                    hashHistory.push(RouterConst.ROUTER_LOGIN)
                 }else{
                     reject&&reject(data)
                     Modal.error({

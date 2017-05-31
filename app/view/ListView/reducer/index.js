@@ -17,6 +17,12 @@ export default function update (state = initialState, action){
                 total: action.data.pageInfo.total,
                 listData: action.data.result
             }
+        case ActionType.DELETE_LIST_DATA:
+            return {
+                ...state,
+                total: state.total-1,
+                listData: action.data
+            }
         default:
             return state
     }

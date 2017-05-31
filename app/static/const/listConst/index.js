@@ -223,11 +223,15 @@ export const tableList = {
             },
             {
                 title: '子公司',
-                dataIndex: 'branchName'
+                render: (text, record) => (
+                    <span>{record.branchId.map(obj=>obj.name).join("/")}</span>
+                )
             },
             {
                 title: '部门',
-                dataIndex: 'departmentName'
+                render: (text, record) => (
+                    <span>{record.departments.map(obj=>obj.name).join("/")}</span>
+                )
             },
             {
                 title: '职位',
@@ -310,7 +314,7 @@ export const tableList = {
                 type: 'tree-select-multiple',
                 placeholder: "请选择",
                 isRequired: true,
-                key: "departments",
+                key: ["branchId._id", "departments._id"],
                 value: "",
             },
             // {
@@ -374,7 +378,7 @@ export const tableList = {
                 type: 'tree-select-multiple',
                 placeholder: "请选择",
                 isRequired: true,
-                key: "departments",
+                key: ["branchId._id", "departments._id"],
                 value: "",
             },
             // {

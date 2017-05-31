@@ -36,21 +36,20 @@ class FormView extends React.Component{
         if(listData){
             data = data.map(obj=>{
                 let temp, value
-                if(obj.type == "cascader"){
-                    value = obj.key.map(t => listData[t] || "")
-                }else{
-                    temp = obj.key.split(".")
-                    if(temp.length > 1 && listData[temp[0]]){
-                        let d = listData[temp[0]]
+                if(Array.isArray(obj.key)){
+                    value = []
+                    for(let i =0; i<obj.key.length; i++){
+                        let d = this.getValueByKey(obj.key[i], listData)
                         if(Array.isArray(d)){
-                            value = d.map(c => c[temp[1]] ||　"")
+                            value = value.concat(d)
                         }else{
-                            value = d[temp[1]] || ""
+                            value.push(d)
                         }
-                    }else{
-                        value = listData[obj.key] || ""
                     }
+                }else{
+                    value = this.getValueByKey(obj.key, listData)
                 }
+                
                 return { ...obj, value: value} 
             })
         }
@@ -66,6 +65,21 @@ class FormView extends React.Component{
         for(let key in formApis){
             this.props.getListParentData(key, formApis[key].api, {}, formApis[key].type)
         }
+    }
+
+    getValueByKey(key, itemData){
+        let temp = key.split("."), value
+        if(temp.length > 1 && itemData[temp[0]]){
+            let d = itemData[temp[0]]
+            if(Array.isArray(d)){
+                value = d.map(c => c[temp[1]] ||　"")
+            }else{
+                value = d[temp[1]] || ""
+            }
+        }else{
+            value = itemData[key] || ""
+        }
+        return value
     }
 
     onInputChangeHandler(e, id){
@@ -124,11 +138,10 @@ class FormView extends React.Component{
             case "tree-select-multiple":
                 let treeData = this.getTreeSelectData(this.props.parentData[obj.id] || [])
                 return (
-                    <TreeSelect treeData={treeData} mode="multiple" treeCheckable={true} searchPlaceholder={obj.placeholder} value={obj.value || []} onChange={(e)=>this.onSelectChangeHandler(e, obj.id)} />
+                    <TreeSelect treeData={treeData} mode="multiple" treeCheckable={true} searchPlaceholder={obj.placeholder} value={obj.value || []} onChange={(value, label, extra)=>this.onSelectChangeHandler(value, obj.id)} />
                 )
             case "cascader":
-                let d = this.props.parentData[obj.id] || []
-                let opt = this.getCascaderOptions(d)
+                let opt = this.getCascaderOptions(this.props.parentData[obj.id] || [])
                 return (
                     <Cascader options={opt}  placeholder={obj.placeholder} value={obj.value || []} onChange={(e)=>this.onSelectChangeHandler(e, obj.id)} />
                 )
@@ -138,12 +151,12 @@ class FormView extends React.Component{
     }
 
     getTreeSelectData(arr){
-        return arr.map(obj => {
+        return arr.map((obj, index) => {
             let child = obj.departments || []
             let state = {
                 value: obj._id,
                 label: obj.name,
-                key: obj._id,
+                key:  obj._id,
             }
             if (child.length > 0) {
                 state.children = this.getTreeSelectData(child)
@@ -166,6 +179,29 @@ class FormView extends React.Component{
         })
     }
 
+    getBranchNameByValue(data, ids){
+        for(let i=0; i<data.length; i++){
+            let obj = data[i]
+            if(ids.indexOf(obj._id) >= 0) return obj.name
+            if(obj.departments){
+                let res = this.getBranchNameByValue(obj.departments, ids)
+                if(res) return obj.name
+            }
+        }
+        return null
+    }
+
+    getDepartmentNameByValue(data, ids){
+        for(let i=0; i<data.length; i++){
+            let obj = data[i]
+            if(obj.departments){
+                let res = obj.departments.find(d => ids.indexOf(d._id)>=0)
+                if(res) return res.name
+            }
+        }
+        return ""
+    }
+
     getSendData(){
         let result = {message: "", data: {}}, {data} = this.state
         for(let i=0; i<data.length; i++){
@@ -179,11 +215,13 @@ class FormView extends React.Component{
                     return result
                 }
             }
-            if(obj.type == "cascader"){
-                obj.key.map((k, index)=>result.data[k] = obj.value[index] || '')
-            }else{
-                result.data[obj.id] = obj.value;
+            if(this.props.params.table=="user" && obj.id == "departments"){
+                let depData = this.props.parentData[obj.id]
+                result.data["branchName"] = this.getBranchNameByValue(depData, obj.value)
+                result.data["departmentName"] = this.getDepartmentNameByValue(depData, obj.value)
             }
+
+            result.data[obj.id] = obj.value;
         }
         return result
     }
