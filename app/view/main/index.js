@@ -9,6 +9,7 @@ const { Header, Footer, Sider, Content } = Layout;
 import Headers from '../../components/header'
 import SiderMenu from '../../components/siderMenu'
 import * as RouterConst from '../../static/const/routerConst'
+import { checkLogin } from '../login/reducer/action'
 
 import './index.scss'
 
@@ -18,12 +19,14 @@ class App extends React.Component {
     }
 
     componentDidMount() {
+        this.props.checkLogin()
     }
 
     getSiderMenuByRouter() {
         switch (this.props.location.pathname) {
             case RouterConst.ROUTER_LOGIN:
             case RouterConst.ROUTER_HOME:
+            case RouterConst.WE_CLOME:
                 return ""
             default:
                 return <Sider className="sider"><SiderMenu /></Sider>
@@ -34,6 +37,7 @@ class App extends React.Component {
         switch (this.props.location.pathname) {
             case RouterConst.ROUTER_LOGIN:
             case RouterConst.ROUTER_HOME:
+            case RouterConst.WE_CLOME:
                 return ""
             default:
                 return <Headers />
@@ -58,4 +62,11 @@ App.PropTypes = {
 }
 
 
-export default App
+let mapStateToProps = state => ({
+})
+
+let mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({ checkLogin }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)

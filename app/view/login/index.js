@@ -63,7 +63,6 @@ class Login extends React.Component{
         if(e.keyCode===13){
             this.onLoginHandler()
         }
-        
     }
     render(){
         const { Content } = Layout
