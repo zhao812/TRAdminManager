@@ -50,6 +50,14 @@ plugins.push(
     })
 )
 plugins.push(
+  new webpack.DefinePlugin({
+            "process.env": { 
+                NODE_ENV: JSON.stringify("production") 
+            }
+        })
+)
+plugins.push(
+
   new webpack.LoaderOptionsPlugin({
             options: {
                 postcss: function(){
@@ -82,7 +90,14 @@ Object.keys(entry).forEach(function(name){
 
 //css单独打包
 // plugins.push(new ExtractTextPlugin("./css/[name].min.css"))
-plugins.push(new webpack.optimize.CommonsChunkPlugin({ name: 'vendor', filename: 'vendor.bundle.js' }));
+plugins.push(
+  new webpack.optimize.UglifyJsPlugin({
+             compress: {
+                warnings: false
+             }
+        }),
+  new webpack.optimize.CommonsChunkPlugin({ name: 'vendor', filename: 'vendor.bundle.js' })
+);
 
 var config = {
   devtool: 'source-map',

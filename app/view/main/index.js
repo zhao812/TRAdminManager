@@ -23,6 +23,7 @@ class App extends React.Component {
     getSiderMenuByRouter() {
         switch (this.props.location.pathname) {
             case RouterConst.ROUTER_LOGIN:
+            case RouterConst.ROUTER_HOME:
                 return ""
             default:
                 return <Sider className="sider"><SiderMenu /></Sider>
@@ -32,6 +33,7 @@ class App extends React.Component {
     getHeaderByRouter() {
         switch (this.props.location.pathname) {
             case RouterConst.ROUTER_LOGIN:
+            case RouterConst.ROUTER_HOME:
                 return ""
             default:
                 return <Headers />
