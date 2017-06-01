@@ -347,8 +347,7 @@ export const tableList = {
                 title: "密码",
                 type: "password",
                 placeholder: "",
-                isRequired: true,
-                key: "password",
+                key: "",
                 value: ""
             },
             {

@@ -195,10 +195,6 @@ class MenuManager extends React.Component {
                              </div>
                              
                              <div className="oLabel">
-                                 <span>排序编号</span>
-                                 <Input onChange={this.handlerChange.bind(this,['sortNum'])}/>
-                             </div>
-                             <div className="oLabel">
                                  <span>用户权限</span>
                                  <Select mode="multiple"  
                                         onChange={this.handlerChanges.bind(this,['role'])} 
