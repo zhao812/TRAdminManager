@@ -50,3 +50,10 @@ export const deleteListData = (url, opt, type) => (dispatch, getState) =>{
         }, reject)
     })
 }
+
+/**清空数据 */
+export const clearListData = () => dispatch =>{
+    dispatch({
+        type: ActionType.CLEAR_LIST_DATA
+    })
+}

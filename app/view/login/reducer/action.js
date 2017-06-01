@@ -33,3 +33,13 @@ export const userLogin = (userName, password) => dispatch => {
         hashHistory.push(RouterConst.ROUTER_LIST + "/user")
     })
 }
+
+export const loginOut = () => dispatch => {
+    let url = "api/sys/v1/user/loginOff"
+    dispatch(utils.sendMsg(url, null, "GET")).then(data => {
+        dispatch({
+            type: ActionType.USER_LOGIN_OUT,
+        })
+        hashHistory.push(RouterConst.ROUTER_LOGIN)
+    })
+}

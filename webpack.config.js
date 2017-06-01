@@ -130,10 +130,15 @@ var config = {
 if(process.env.NODE_ENV == 'production'){
   delete config.devServer
   delete config.devtool
+  // new webpack.optimize.UglifyJsPlugin({
+  //     compress: {
+  //       warnings: false
+  //     }
+  //   })
   config.plugins.push(
     //清空输出目录
-    new CleanPlugin([], {
-      "root": DIST_PATH,
+    new CleanPlugin(["build"], {
+      "root": ROOT_PATH,
       verbose: true,
       dry: false
     })

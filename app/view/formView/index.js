@@ -94,6 +94,7 @@ class FormView extends React.Component{
     setChangeValue(value, id){
         let data = this.state.data.map(obj => {
             if(obj.id == id){
+                if(obj.type == "number") value = parseInt(value)
                 return {
                     ...obj,
                     value: value
@@ -119,6 +120,7 @@ class FormView extends React.Component{
 
     getComponentByType(obj){
         switch(obj.type){
+            case "number":
             case "textarea":
             case "password":
             case "text":

@@ -20,6 +20,7 @@ class MenuManager extends React.Component {
                {title: '编号 ',dataIndex: '_id',key: '_id'},
                {title: '菜单名称',dataIndex: 'name',key: 'name'},
                {title: '菜单链接',dataIndex: 'url',key: 'url'},
+               {title: '排序',dataIndex: 'sort',key: 'sort'},
             //    {title: '创建者',dataIndex: 'createBy',key: 'createBy'},
                {title: '创建时间',dataIndex: 'createTime',key: 'createTime'},
                {title: '状态',dataIndex: 'status',key: 'status'},
@@ -43,6 +44,7 @@ class MenuManager extends React.Component {
             type:'modfied',
             menuname:text[0].name,
             menuurl:text[0].url,
+            menusort:text[0].sort,
             id:text[0]._id,
             menuprevId:text[0].prevId,
             menurole:text[0].permissions,
@@ -86,20 +88,21 @@ class MenuManager extends React.Component {
             type:'add',
             name:'',
             url:'',
+            sort: 100,
             prevId:''
         })
     }
 
     handlerNewMenu(e){
-        const {type,name,url,id,menuname,menuurl,prevId,menuprevId,role,menurole} = this.state;
+        const {type,name,url,id,menuname,menuurl,prevId,menuprevId,role,menurole, sort, menusort} = this.state;
         this.setState({
             showWindow:0
         })
         
         if(type==="add"){
-            this.props.addMenu(name,url,prevId,role).then(()=>this.props.menuManage())
+            this.props.addMenu(name,url,prevId,role, sort).then(()=>this.props.menuManage())
         }else{
-            this.props.oEditor(id,menuname,menuurl,menuprevId,menurole).then(this.props.menuManage())
+            this.props.oEditor(id,menuname,menuurl,menuprevId,menurole, menusort).then(this.props.menuManage())
         }
     }
     handlerCancel(e){
@@ -159,7 +162,7 @@ class MenuManager extends React.Component {
         this.props.menuManage( { pageSize: 10, currentPage: pager.current })
     }
     render() {
-        const {showWindow ,type,menuname,name,url,menuurl,prevId,menuprevId,role,menurole} =this.state;
+        const {showWindow ,type,menuname,name,url,menuurl,sort, menusort, prevId,menuprevId,role,menurole} =this.state;
         const {rule,prevData,data}=this.props;
         console.log(prevData,22444444)
         const children = [];
@@ -202,6 +205,9 @@ class MenuManager extends React.Component {
                                         style={{width:200}} value={type==='add'?role:menurole} >
                                     {children}
                                  </Select>
+                             </div>
+                             <div className="oLabel">
+                                 <span>排序</span><Input type="number" onChange={this.handlerChange.bind(this, ['sort'])} value={type=='add'?sort:menusort}/>
                              </div>
                          </div>
                          <div className="footer">

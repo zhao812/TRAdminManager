@@ -14,8 +14,7 @@ const Routers = {
 	path: RouterConst.ROUTER_HOME,
 	getComponent(nextState, cb){ App(cb) },
 	indexRoute: {
-			path:RouterConst.ROUTER_HOME,
-			getComponent(nextState, cb){ Login(cb) },
+		getComponent(nextState, cb){ ListView(cb) }
 	},
 	childRoutes: [
 		{

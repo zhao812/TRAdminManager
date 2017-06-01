@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { Router, Route, IndexRoute, Link ,hashHistory} from 'react-router';
 import { Layout, Menu, Icon, Input, Button } from 'antd'
 import * as RouterConst from '../../static/const/routerConst'
+import { loginOut } from '../../view/login/reducer/action'
 
 import './index.scss'
 
@@ -32,7 +33,7 @@ class Headers extends React.Component {
                 <div className="logo">藤榕后台管理系统</div>
                 <div className="menu-right">
                     <div className="menu-item">{username}</div>
-                    <div className="menu-item"><Button className="logoOut">退出</Button></div>
+                    <div className="menu-item"><Button className="logoOut" onClick={()=>this.props.loginOut()}>退出</Button></div>
                 </div>
             </Header>
         )
@@ -49,7 +50,7 @@ let mapStateToProps = state => ({
 })
 
 let mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({}, dispatch)
+    return bindActionCreators({ loginOut }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Headers)

@@ -13,14 +13,14 @@ export const menuManage = (data) => dispatch => {
         }, reject)
     })
 }
-export const addMenu = (name,iurl,prevId,role) => dispatch => {
+export const addMenu = (name,iurl,prevId,role, sort) => dispatch => {
     let url = "/api/sys/db/menu/add";
-    let ops={"name":name,"url":iurl,"prevId":prevId||null,"permissions":role};
+    let ops={"name":name,"url":iurl,"prevId":prevId||null,"permissions":role, "sort": sort};
     return dispatch(Fetches.sendMsg(url, ops,'POST'))
 }
-export const oEditor = (id,name,iurl,prevId,role) => dispatch => {
+export const oEditor = (id,name,iurl,prevId,role, sort) => dispatch => {
     let url = "/api/sys/db/menu/up";
-    let ops={"_id":id,"name":name,"url":iurl,"prevId":prevId||null,"permissions":role}
+    let ops={"_id":id,"name":name,"url":iurl,"prevId":prevId||null,"permissions":role, "sort": sort}
     return dispatch(Fetches.sendMsg(url, ops,'PUT'))
 }
 export const oDelete = (id) => dispatch => {
