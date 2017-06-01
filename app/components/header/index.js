@@ -12,17 +12,9 @@ import './index.scss'
 class Headers extends React.Component {
     constructor(props, context) {
         super(props, context)
-
-        this.state = {
-            selectedTab: "home"
-        }
     }
 
-    handleClick(e) {
-        this.setState({selectedTab: e.key})
-    }
-
-    onChangeUserName(){
+    componentDidMount(){
     }
 
     render() {

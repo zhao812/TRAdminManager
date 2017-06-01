@@ -35,11 +35,21 @@ export const userLogin = (userName, password) => dispatch => {
 }
 
 export const loginOut = () => dispatch => {
-    let url = "api/sys/v1/user/loginOff"
+    let url = "/api/sys/v1/user/loginOff"
     dispatch(utils.sendMsg(url, null, "GET")).then(data => {
         dispatch({
             type: ActionType.USER_LOGIN_OUT,
         })
         hashHistory.push(RouterConst.ROUTER_LOGIN)
+    })
+}
+
+export const checkLogin = () => dispatch => {
+        let url = "/api/sys/v1/user"
+    dispatch(utils.sendMsg(url, null, "GET")).then(data => {
+        dispatch({
+            type: ActionType.INIT_USER_LOGIN,
+            data: data
+        })
     })
 }
