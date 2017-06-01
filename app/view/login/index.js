@@ -24,6 +24,11 @@ class Login extends React.Component{
     }
 
     componentDidMount(){
+        if(this.props.isLogin){
+            hashHistory.push(RouterConst.ROUTER_LIST+"/user")
+            return
+        }
+
         this.setState({
             username: "",
             password: ""
@@ -89,9 +94,11 @@ class Login extends React.Component{
 }
 
 Login.PropTypes = {
+    isLogin: PropTypes.bool.isRequired
 }
 
 let mapStateToProps = state => ({
+    isLogin: state.loginReducer.isLogin
 })
 
 let mapDispatchToProps = (dispatch) => {
