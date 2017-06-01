@@ -34,7 +34,7 @@ const roleData = data => ({
     data : data
 })
 export const getRole = () => dispatch => {
-    let url = "api/sys/db/permissions/find";
+    let url = "/api/sys/db/permissions/find";
     return dispatch(Fetches.sendMsg(url,{},'GET')).then((data)=>dispatch(roleData(data)))
 }
 
@@ -43,7 +43,7 @@ const prevData = data => ({
     data : data
 })
 export const getPrevData = () => dispatch => {
-    let url = "api/sys/v1/menu/find";
+    let url = "/api/sys/v1/menu/find";
     return dispatch(Fetches.sendMsg(url,{},'GET')).then((data)=>dispatch(prevData(data)))
 }
 

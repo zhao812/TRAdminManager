@@ -59,13 +59,18 @@ class Login extends React.Component{
 
         this.props.userLogin(username, password)
     }
-
+    onKeyup(e){
+        if(e.keyCode===13){
+            this.onLoginHandler()
+        }
+        
+    }
     render(){
         const { Content } = Layout
         let { username, password } = this.state
 
         return(
-            <Content className="login-container">
+            <Content className="login-container" onKeyUp={(e)=>this.onKeyup(e)}>
                 <div className="login-div">
                     <p className="login-title">藤榕后台管理系统</p>
                     <div className="email-div">
@@ -75,7 +80,7 @@ class Login extends React.Component{
                         <Input className="password-input" type="password" placeholder="6-12位登录密码" maxLength="12" value={password} onChange={(e)=>this.onInputChange(e, "password")} />
                         <span className="forgetPw-txt">忘记密码?</span>
                     </div>
-                    <Button className="bnLogin" onClick={()=>this.onLoginHandler()}>登录</Button>
+                    <Button className="bnLogin" onClick={()=>this.onLoginHandler()} >登录</Button>
                     {/*<div className="login-tip">还没有账户?  <Link to={ RouterConst.ROUTER_REGISTER }>立即前往</Link></div>*/}
                 </div>
             </Content>
