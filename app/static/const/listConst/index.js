@@ -234,10 +234,6 @@ export const tableList = {
                 )
             },
             {
-                title: '职位',
-                dataIndex: 'roleName'
-            },
-            {
                 title: '办公地点',
                 dataIndex: 'officeName'
             }
@@ -420,7 +416,7 @@ export const tableList = {
             {
                 title: "角色",
                 render: (text, record) => (
-                    <span>{record.roles.join("/")}</span>
+                    <span>{record.roles.map(obj=>obj.name).join("/")}</span>
                 )
             },
             {
@@ -434,7 +430,7 @@ export const tableList = {
         ],
         urlApi: {
             list: {
-                api: "/api/sys/db/usergroup/findByPage",
+                api: "/api/sys/v1/usergroup/findByPage",
                 type: "GET"
             },
             add: {
@@ -470,8 +466,8 @@ export const tableList = {
                 id: "roles",
                 title: "角色",
                 type: "select-multiple",
-                placeholder: "",
-                key: "roles",
+                placeholder: "请选择",
+                key: "roles._id",
                 value: ""
             }
         ],
@@ -490,7 +486,7 @@ export const tableList = {
                 title: "角色",
                 type: "select-multiple",
                 placeholder: "",
-                key: "roles",
+                key: "roles._id",
                 value: ""
             }
         ]
@@ -508,8 +504,14 @@ export const tableList = {
                 dataIndex: 'key',
             },
             {
-                title: '职位',
+                title: '角色',
                 dataIndex: 'name',
+            },
+            {
+                title: '权限',
+                render: (text, record)=>(
+                    <span>{record.permissions.map(obj=>obj.name).join("/")}</span>
+                )
             },
             {
                 title: '创建者',
@@ -522,7 +524,7 @@ export const tableList = {
         ],
         urlApi: {
             list: {
-                api: "/api/sys/db/role/findByPage",
+                api: "/api/sys/v1/role/findByPage",
                 type: "GET"
             },
             add: {
@@ -537,27 +539,48 @@ export const tableList = {
                 api: "/api/sys/db/role/up",
                 type: "PUT"
             },
-            form: null
+            form: {
+                permissions: {
+                    api: "/api/sys/db/permissions/find",
+                    type: "GET"
+                }
+            }
         },
         add: [
             {
                 id: "name",
-                title: "职位",
+                title: "角色",
                 type: "text",
                 placeholder: "",
                 isRequired: true,
                 key: "name",
+                value: ""
+            },
+            {
+                id: "permissions",
+                title: "权限",
+                type: "select-multiple",
+                placeholder: "请选择",
+                key: "permissions._id",
                 value: ""
             }
         ],
         edit: [
             {
                 id: "name",
-                title: "职位",
+                title: "角色",
                 type: "text",
                 placeholder: "",
                 isRequired: true,
                 key: "name",
+                value: ""
+            },
+            {
+                id: "permissions",
+                title: "权限",
+                type: "select-multiple",
+                placeholder: "请选择",
+                key: "permissions._id",
                 value: ""
             }
         ]
@@ -652,6 +675,166 @@ export const tableList = {
                 placeholder: "",
                 isRequired: true,
                 key: "type._id",
+                value: ""
+            }
+        ]
+    },
+
+    dictionary: {
+        title: "权限类型列表",
+        subTitle: {
+            add: "新增类型",
+            edit: "修改权限类型信息"
+        },
+        columns: [
+            {
+                title: '序号',
+                dataIndex: 'key',
+            },
+            {
+                title: '权限类型',
+                dataIndex: 'name',
+            },
+            {
+                title: '关键字',
+                dataIndex: "primarykey"
+            },
+            {
+                title: "值",
+                dataIndex: "value",
+            },
+            {
+                title: "排序",
+                dataIndex: "sort"
+                
+            },
+            {
+                title: "显示名称",
+                dataIndex: "showName"
+            },
+            {
+                title: '创建者',
+                dataIndex: 'createBy',
+            },
+            {
+                title: '创建日期',
+                dataIndex: 'createTime',
+            }
+        ],
+        urlApi: {
+            list: {
+                api: "/api/sys/db/dictionary/findByPage",
+                type: "GET"
+            },
+            add: {
+                api: "/api/sys/db/dictionary/add",
+                type: "POST"
+            },
+            delete: {
+                api: "/api/sys/db/dictionary",
+                type: "DELETE"
+            },
+            edit: {
+                api: "/api/sys/db/dictionary/up",
+                type: "PUT"
+            },
+            form: null
+        },
+        add: [
+            {
+                id: "name",
+                title: "权限类型",
+                type: "text",
+                placeholder: "",
+                isRequired: true,
+                key: "name",
+                minLength: 1,
+                maxLength: 30,
+                value: ""
+            },
+            {
+                id: "primarykey",
+                title: "关键字",
+                type: "text",
+                placeholder: "",
+                isRequired: true,
+                key: "primarykey",
+                value: ""
+            },
+            {
+                id: "value",
+                title: "值",
+                type: "text",
+                placeholder: "",
+                isRequired: true,
+                key: "value",
+                value: ""
+            },
+            {
+                id: "sort",
+                title: "排序",
+                type: "number",
+                placeholder: "",
+                isRequired: true,
+                key: "sort",
+                value: ""
+            },
+            {
+                id: "showName",
+                title: "显示名称",
+                type: "text",
+                aceholder: "",
+                isRequired: true,
+                key: "showName",
+                value: ""
+            }
+        ],
+        edit: [
+            {
+                id: "name",
+                title: "权限类型",
+                type: "text",
+                placeholder: "",
+                isRequired: true,
+                key: "name",
+                minLength: 1,
+                maxLength: 30,
+                value: ""
+            },
+            {
+                id: "primarykey",
+                title: "关键字",
+                type: "text",
+                placeholder: "",
+                isRequired: true,
+                key: "primarykey",
+                value: ""
+            },
+            {
+                id: "value",
+                title: "值",
+                type: "text",
+                placeholder: "",
+                isRequired: true,
+                key: "value",
+                value: ""
+            },
+            {
+                id: "sort",
+                title: "排序",
+                type: "number",
+                placeholder: "",
+                isRequired: true,
+                key: "sort",
+                value: ""
+            },
+            {
+                id: "showName",
+                title: "显示名称",
+                type: "text",
+                aceholder: "",
+                isRequired: true,
+                key: "showName",
                 value: ""
             }
         ]

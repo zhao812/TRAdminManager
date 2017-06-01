@@ -8,7 +8,7 @@ import { connect } from 'react-redux'
 import { hashHistory } from 'react-router'
 import { Layout, Table, Button, Modal } from 'antd'
 
-import { getListData, deleteListData } from './reducer/action'
+import { getListData, deleteListData, clearListData } from './reducer/action'
 
 import * as RouterConst from '../../static/const/routerConst'
 import * as ListConst from '../../static/const/listConst'
@@ -31,7 +31,14 @@ class ListView extends React.Component {
     }
 
     componentDidMount() {
-        let type = this.props.params.table, obj = ListConst.tableList[type], state = {
+        let type = this.props.params.table
+
+        if(!type){
+            hashHistory.push(RouterConst.ROUTER_LIST + "/user")
+            return
+        }
+
+        let obj = ListConst.tableList[type], state = {
             title: obj.title,
             bnAddTitle: obj.subTitle.add,
             columns: [
@@ -45,8 +52,11 @@ class ListView extends React.Component {
                 }
             ],
             urlApi: obj.urlApi.list.api,
-            fetchType: obj.urlApi.list.type
+            fetchType: obj.urlApi.list.type,
+            loading: false,
+            pagination: { pageSize: 10, current: 1 },
         }
+        this.props.clearListData()
         this.setState(state, ()=>this.sendData(this.state.pagination))
     }
 
@@ -87,11 +97,18 @@ class ListView extends React.Component {
     onDeleteHandler(id){
         let tableType = this.props.params.table, obj = ListConst.tableList[tableType]
         let url = obj.urlApi.delete.api+"/"+id, type = obj.urlApi.delete.type
-        this.props.deleteListData(url, {}, type).then(()=>{
-            Modal.success({
-                title: '提示',
-                content: "删除成功！"
-            })
+
+        Modal.confirm({
+            title: "提示",
+            content: "是否删除该记录？",
+            onOk: ()=>{
+                this.props.deleteListData(url, {}, type).then(()=>{
+                    Modal.success({
+                        title: '提示',
+                        content: "删除成功！"
+                    })
+                })
+            }
         })
     }
 
@@ -128,7 +145,7 @@ let mapStateToProps = state => ({
 })
 
 let mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({ getListData, deleteListData }, dispatch)
+    return bindActionCreators({ getListData, deleteListData, clearListData }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListView)
