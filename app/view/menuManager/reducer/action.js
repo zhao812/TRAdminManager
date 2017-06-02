@@ -54,6 +54,12 @@ export const getPrevData = () => dispatch => {
 }
 
 
+export const handlerLoading = (loading) => dispatch => {
+    dispatch({
+        type:ActionTypes.Is_Loading,
+        loading:loading
+    })
+}
 
 
 

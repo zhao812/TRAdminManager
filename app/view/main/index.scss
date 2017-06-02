@@ -2,6 +2,9 @@ body{
     min-width:1280px;
     background:#fff;
 }
+.xt{
+    height:100%;
+}
 .ant-layout.ant-layout-has-sider{
     background:#fff;
 }
@@ -10,7 +13,7 @@ body{
 }
 
 .ant-layout-content{
-    overflow: inherit !important;
+    overflow: hidden !important;
     background: #fff;
 }
 

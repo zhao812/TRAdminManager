@@ -1,11 +1,12 @@
 import React from 'react';
 import { Carousel } from 'antd';
 import { Router, Route, IndexRoute, Link ,hashHistory} from 'react-router';
+import * as RouterConst from '../../static/const/routerConst'
 import './index.scss';
 class Weclome extends React.Component {
     handlerRun(){
         setTimeout(function(){
-            hashHistory.push('/menu')
+            hashHistory.push(RouterConst.ROUTER_LIST + "/user")
         },3000)
         
     }

@@ -5,7 +5,7 @@ import { Layout, Table, Button, Modal ,Input,Select,TreeSelect} from 'antd'
 
 import {addMenu,changName,oEditor,oDelete,getRole,getPrevData,menuManage,handlerLoading} from './reducer/action'
 import {getMenuData} from '../../components/siderMenu/reducer/action'
-
+import Windows from '../../components/window'
 import './index.scss'
 const { Option } = Select;
 const TreeNode = TreeSelect.TreeNode;
@@ -174,47 +174,7 @@ class MenuManager extends React.Component {
         });
         return (
             <div className="wapper_all">
-                 <div className={showWindow===0?"oWindow":"oWindow showoWindow"}>
-                     <div className="oBg"></div>
-                     <div className="sWindow">
-                         <div className="headers">{type==="add"?"新建菜单":"修改菜单"}</div>
-                         <div className="oContent">
-                             <div className="oLabel">
-                                 <span>菜单名称</span><Input onChange={this.handlerChange.bind(this,['name'])} value={type=='add'?name:menuname}/>
-                             </div>
-                             <div className="oLabel">
-                                 <span>菜单链接</span><Input onChange={this.handlerChange.bind(this,['url'])} value={type=='add'?url:menuurl}/>
-                             </div>
-                             <div className="oLabel">
-                                 <span>上级菜单</span>
-                                  <TreeSelect
-                                   allowClear
-                                   treeDefaultExpandAll  
-                                   dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-                                   style={{ width: 200 }} value={type==='add'?prevId:menuprevId}  
-                                    onChange={this.handlerChanges.bind(this,['prevId'])}>
-                                        {this.setMenu(prevData)}
-                                  </TreeSelect>
-                             </div>
-                             
-                             <div className="oLabel">
-                                 <span>用户权限</span>
-                                 <Select mode="multiple"  
-                                        onChange={this.handlerChanges.bind(this,['role'])} 
-                                        style={{width:200}} value={type==='add'?role:menurole} >
-                                    {children}
-                                 </Select>
-                             </div>
-                             <div className="oLabel">
-                                 <span>排序</span><Input type="number" onChange={this.handlerChange.bind(this, ['sort'])} value={type=='add'?sort:menusort}/>
-                             </div>
-                         </div>
-                         <div className="footer">
-                            <Button type="primary" onClick={this.handlerNewMenu.bind(this)}>确定</Button>
-                            <Button onClick={this.handlerCancel.bind(this)}>取消</Button>
-                         </div>
-                     </div>
-                 </div>
+                 <Windows/>
                  <div className="headers"><h6 className="title">菜单管理</h6>
                      <Button className="headersButton" onClick={this.handlerNew.bind(this)}>新建菜单</Button>
                 </div>

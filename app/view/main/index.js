@@ -26,7 +26,6 @@ class App extends React.Component {
         switch (this.props.location.pathname) {
             case RouterConst.ROUTER_LOGIN:
             case RouterConst.ROUTER_HOME:
-           // case RouterConst.WE_CLOME:
                 return ""
             default:
                 return <Sider className="sider"><SiderMenu /></Sider>
@@ -46,13 +45,15 @@ class App extends React.Component {
 
     render() {
         return (
-            <Layout>
-                {this.getHeaderByRouter()}
+            <div className="xt">
                 <Layout>
-                    {this.getSiderMenuByRouter()}
-                    {React.cloneElement(this.props.children, { key: this.props.location.pathname })}
+                    {this.getHeaderByRouter()}
+                    <Layout>
+                        {this.getSiderMenuByRouter()}
+                        {React.cloneElement(this.props.children, { key: this.props.location.pathname })}
+                    </Layout>
                 </Layout>
-            </Layout>
+            </div>
         );
     }
 }

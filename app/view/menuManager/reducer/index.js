@@ -2,7 +2,8 @@ import * as ActionTypes from './ActionTypes'
 const initialState = {
     data:[],
     rule:"",
-    prevData:""
+    prevData:"",
+    loading:true
 }
 
 export default function update (state = initialState, action){
@@ -10,7 +11,13 @@ export default function update (state = initialState, action){
         case ActionTypes.Get_Menu_Data:
             return{
                 ...state,
-                data:action.data
+                data:action.data,
+                loading:false
+            }
+        case ActionTypes.Is_Loading:
+            return{
+                ...state,
+                loading:action.loading
             }
         case ActionTypes.RoleData:
             return{
