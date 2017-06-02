@@ -2,7 +2,13 @@ import * as Fetches from '../../../utils'
 import * as ActionTypes from './ActionTypes'
 const getMenuData = data => ({
     type : ActionTypes.Get_Menu_Data,
-    data : data
+    data : {
+        ...data,
+        result: data.result.map((obj, index)=>({
+            ...obj,
+            key: index+1
+        }))
+    }
 })
 export const menuManage = (data) => dispatch => {
     return new Promise((resolve, reject) => {

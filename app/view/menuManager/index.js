@@ -17,16 +17,16 @@ class MenuManager extends React.Component {
            showWindow:0,
            type:'add',
            columns : [
-               {title: '编号 ',dataIndex: '_id',key: '_id'},
-               {title: '菜单名称',dataIndex: 'name',key: 'name'},
-               {title: '菜单链接',dataIndex: 'url',key: 'url'},
-               {title: '排序',dataIndex: 'sort',key: 'sort'},
+               {title: '编号 ',dataIndex: '_id'},
+               {title: '菜单名称',dataIndex: 'name'},
+               {title: '菜单链接',dataIndex: 'url'},
+               {title: '排序',dataIndex: 'sort'},
             //    {title: '创建者',dataIndex: 'createBy',key: 'createBy'},
-               {title: '创建时间',dataIndex: 'createTime',key: 'createTime'},
-               {title: '状态',dataIndex: 'status',key: 'status'},
+               {title: '创建时间',dataIndex: 'createTime'},
+               {title: '状态',dataIndex: 'status'},
             //    {title: '更新者',dataIndex: 'upBy',key: 'upBy'},
-               {title: '修改时间',dataIndex: 'upTime',key: 'upTime'},
-               {title: '操作',key:'use',render:(text,record,index)=>{
+               {title: '修改时间',dataIndex: 'upTime'},
+               {title: '操作',render:(text,record,index)=>{
                    return(
                        <div>
                             <Button onClick={this.handlerEdit.bind(this,[text])}>编辑</Button>
