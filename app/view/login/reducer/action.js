@@ -46,7 +46,7 @@ export const loginOut = () => dispatch => {
 }
 
 export const checkLogin = () => dispatch => {
-        let url = "/api/sys/v1/user"
+    let url = "/api/sys/v1/user"
     dispatch(utils.sendMsg(url, null, "GET")).then(data => {
         dispatch({
             type: ActionType.INIT_USER_LOGIN,
