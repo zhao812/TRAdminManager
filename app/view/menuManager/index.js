@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import { Layout, Table, Button, Modal ,Input,Select,TreeSelect} from 'antd'
 
 import {addMenu,changName,oEditor,oDelete,getRole,getPrevData,menuManage} from './reducer/action'
-import {getMenuData} from '../../components/siderMenu/reducer/action'
 
 import './index.scss'
 const { Option } = Select;
@@ -237,7 +236,7 @@ let mapStateToProps = state => ({
 })
 
 let mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({ addMenu ,oEditor,oDelete,getRole,getPrevData,menuManage,getMenuData}, dispatch)
+    return bindActionCreators({ addMenu ,oEditor,oDelete,getRole,getPrevData,menuManage}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MenuManager)
