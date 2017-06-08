@@ -3,7 +3,8 @@ const initialState = {
     data:[],
     rule:"",
     prevData:"",
-    loading:true
+    loading:true,
+    isShow:false
 }
 
 export default function update (state = initialState, action){
@@ -13,6 +14,11 @@ export default function update (state = initialState, action){
                 ...state,
                 data:action.data,
                 loading:false
+            }
+        case ActionTypes.Is_Show:
+            return{
+                ...state,
+                isShow:action.isShow
             }
         case ActionTypes.Is_Loading:
             return{

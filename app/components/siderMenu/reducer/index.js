@@ -17,6 +17,7 @@ export default function update (state = initialState, action){
                 openKeys:action.openKeys
             }
         case ActionTypes.INIT_MENU_LIST:
+        console.log(action.data,1898)
             return {
                 ...state,
                 menuList: action.data

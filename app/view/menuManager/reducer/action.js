@@ -1,5 +1,6 @@
 import * as Fetches from '../../../utils'
 import * as ActionTypes from './ActionTypes'
+
 const getMenuData = data => ({
     type : ActionTypes.Get_Menu_Data,
     data : {
@@ -62,4 +63,9 @@ export const handlerLoading = (loading) => dispatch => {
 }
 
 
-
+export const handlerisShow = (isShow) => dispatch => {
+    dispatch({
+        type:ActionTypes.Is_Show,
+        isShow:isShow
+    })
+}

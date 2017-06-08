@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Layout, Table, Button, Modal ,Input,Select,TreeSelect} from 'antd'
+
 import {addMenu,changName,oEditor,oDelete,getRole,getPrevData,menuManage,handlerLoading} from './reducer/action'
 import {getMenuData} from '../../components/siderMenu/reducer/action'
 
@@ -46,7 +47,7 @@ class MenuManager extends React.Component {
             menusort:text[0].sort,
             id:text[0]._id,
             menuprevId:text[0].prevId,
-            menurole:text[0].permissions,
+            menurole:text[0].permissions
         })
     }
     handlerDelete(text){
@@ -95,17 +96,27 @@ class MenuManager extends React.Component {
 
     handlerNewMenu(e){
         const {type,name,url,id,menuname,menuurl,prevId,menuprevId,role,menurole, sort, menusort,pagination} = this.state;
-        this.setState({
-            showWindow:0
-        })
-        
+       
         let msg;
         if(type==="add"){
-            this.props.addMenu(name,url,prevId,role, sort).then(()=>this.props.menuManage({ pageSize: 10, currentPage:pagination.current  }))
+            if(!name){
+                msg="菜单名称不能为空"
+            }
+            msg&&Modal.error({title:msg})
+            !msg&&this.props.addMenu(name,url,prevId,role, sort).then(
+                ()=>this.props.menuManage({ pageSize: 10, currentPage:pagination.current  })
+            ).then(()=>this.props.getMenuData())
         }else{
-            this.props.oEditor(id,menuname,menuurl,menuprevId,menurole, menusort).
+            if(!menuname){
+                msg="菜单名称不能为空"
+            }
+            msg&&Modal.error({title:msg})
+            !msg&&this.props.oEditor(id,menuname,menuurl,menuprevId,menurole, menusort).
             then(this.props.menuManage({ pageSize: 10, currentPage: pagination.current }))
         }
+        !msg&& this.setState({
+            showWindow:0
+        })
     }
     handlerCancel(e){
         this.setState({
@@ -161,7 +172,7 @@ class MenuManager extends React.Component {
         this.setState({
           pagination: pager,
         });
-        //this.props.handlerLoading(true);
+        this.props.handlerLoading(true);
         this.props.menuManage( { pageSize: 10, currentPage: pager.current })
     }
     render() {
@@ -242,7 +253,6 @@ let mapStateToProps = state => ({
 
 let mapDispatchToProps = (dispatch) => {
     return bindActionCreators({ addMenu ,oEditor,oDelete,getRole,getPrevData,menuManage,getMenuData,handlerLoading}, dispatch)
-
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MenuManager)
