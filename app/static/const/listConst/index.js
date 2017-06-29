@@ -837,5 +837,200 @@ export const tableList = {
                 value: ""
             }
         ]
+    },
+
+    gateway:{
+        title: "API网关",
+        subTitle: {
+            add: "新增网关",
+            edit: "修改网关"
+        },
+        columns: [
+            {
+                title: '序号',
+                dataIndex: 'key',
+            },
+            {
+                title: '地址',
+                dataIndex: 'url',
+            },
+            {
+                title: '是否可用',
+                dataIndex: "isUse"
+            },
+            {
+                title: "是否需要登录",
+                dataIndex: "isLogin",
+            },
+            {
+                title: "版本号",
+                dataIndex: "version"
+            },
+            {
+                title: "项目",
+                dataIndex: "product"
+            },
+            {
+                title: '描述',
+                dataIndex: 'describe',
+            },
+            {
+                title: '文档地址',
+                dataIndex: 'docmentUrl',
+            }
+        ],
+        urlApi: {
+            list: {
+                api: "/api/sys/gateway/list",
+                type: "GET"
+            },
+            add: {
+                api: "/api/sys/gateway",
+                type: "POST"
+            },
+            delete: {
+                api: "/api/sys/db/dictionary",
+                type: "DELETE"
+            },
+            edit: {
+                api: "/api/sys/db/dictionary/up",
+                type: "PUT"
+            },
+            form: null
+        },
+        add: [
+            {
+                id: "url",
+                title: "地址",
+                type: "text",
+                placeholder: "",
+                isRequired: true,
+                key: "url",
+                minLength: 1,
+                maxLength: 30,
+                value: ""
+            },
+            {
+                id: "isUse",
+                title: "是否可用",
+                type: "text",
+                placeholder: "",
+                isRequired: true,
+                key: "isUse",
+                value: ""
+            },
+            {
+                id: "isLogin",
+                title: "是否需要登录",
+                type: "text",
+                placeholder: "",
+                isRequired: true,
+                key: "isLogin",
+                value: ""
+            },
+            {
+                id: "version",
+                title: "版本号",
+                type: "number",
+                placeholder: "",
+                isRequired: true,
+                key: "version",
+                value: ""
+            },
+            {
+                id: "product",
+                title: "项目",
+                type: "text",
+                aceholder: "",
+                isRequired: true,
+                key: "product",
+                value: ""
+            },
+            {
+                id: "describe",
+                title: "描述",
+                type: "number",
+                placeholder: "",
+                isRequired: true,
+                key: "describe",
+                value: ""
+            },
+            {
+                id: "docmentUrl",
+                title: "文档地址",
+                type: "text",
+                aceholder: "",
+                isRequired: true,
+                key: "docmentUrl",
+                value: ""
+            }
+        ],
+        edit: [
+            {
+                id: "url",
+                title: "地址",
+                type: "text",
+                placeholder: "",
+                isRequired: true,
+                key: "url",
+                minLength: 1,
+                maxLength: 30,
+                value: ""
+            },
+            {
+                id: "isUse",
+                title: "是否可用",
+                type: "text",
+                placeholder: "",
+                isRequired: true,
+                key: "isUse",
+                value: ""
+            },
+            {
+                id: "isLogin",
+                title: "是否需要登录",
+                type: "text",
+                placeholder: "",
+                isRequired: true,
+                key: "isLogin",
+                value: ""
+            },
+            {
+                id: "version",
+                title: "版本号",
+                type: "number",
+                placeholder: "",
+                isRequired: true,
+                key: "version",
+                value: ""
+            },
+            {
+                id: "product",
+                title: "项目",
+                type: "text",
+                aceholder: "",
+                isRequired: true,
+                key: "product",
+                value: ""
+            },
+            {
+                id: "describe",
+                title: "描述",
+                type: "number",
+                placeholder: "",
+                isRequired: true,
+                key: "describe",
+                value: ""
+            },
+            {
+                id: "docmentUrl",
+                title: "文档地址",
+                type: "text",
+                aceholder: "",
+                isRequired: true,
+                key: "docmentUrl",
+                value: ""
+            }
+        ],
     }
 }

@@ -12,6 +12,9 @@ const MenuManage = cb => require.ensure([], require => { cb(null, require('../vi
 const FormView = cb => require.ensure([], require => { cb(null, require('../view/formView').default)}, "FormView")
 const ListView = cb => require.ensure([], require => { cb(null, require('../view/listView').default)}, "ListView")
 
+
+const Menus = cb => require.ensure([], require => { cb(null, require('../view/menus').default)}, "Menus")
+
 const Routers = {
 	path: RouterConst.ROUTER_HOME,
 	getComponent(nextState, cb){ App(cb) },
@@ -46,6 +49,11 @@ const Routers = {
 		{
 			path: RouterConst.ROUTER_LIST+"/:table",
 			getComponent(nextState, cb){ ListView(cb) },
+		},
+
+		{
+			path: RouterConst.ROUTER_Menu,
+			getComponent(nextState, cb){ Menus(cb) },
 		}
 	]
 }

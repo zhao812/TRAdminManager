@@ -59,7 +59,9 @@ class MenuManager extends React.Component {
                     Modal.success({
                             title: '删除成功',
                             onOk:function(){
-                                _this.props.menuManage()
+                                _this.props.menuManage();
+                                _this.props.getMenuData();
+                                
                             }
                         })
                 )
@@ -113,6 +115,7 @@ class MenuManager extends React.Component {
             msg&&Modal.error({title:msg})
             !msg&&this.props.oEditor(id,menuname,menuurl,menuprevId,menurole, menusort).
             then(this.props.menuManage({ pageSize: 10, currentPage: pagination.current }))
+            .then(()=>this.props.getMenuData())
         }
         !msg&& this.setState({
             showWindow:0

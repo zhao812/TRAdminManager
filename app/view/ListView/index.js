@@ -32,32 +32,60 @@ class ListView extends React.Component {
 
     componentDidMount() {
         let type = this.props.params.table
-
+        let columns;
+        
         if(!type){
             hashHistory.push(RouterConst.ROUTER_LIST + "/user")
             return
         }
-
-        let obj = ListConst.tableList[type], state = {
-            title: obj.title,
-            bnAddTitle: obj.subTitle.add,
-            columns: [
-                ...obj.columns,
-                {
-                    title: '操作',
-                    width: 200,
-                    render: (text, record) => (
-                        <span className="table-btns"><Button onClick={()=>this.onEditHandler(record._id)}>修改</Button><Button onClick={()=>this.onDeleteHandler(record._id)}>删除</Button></span>
-                    )
-                }
-            ],
-            urlApi: obj.urlApi.list.api,
-            fetchType: obj.urlApi.list.type,
-            loading: false,
-            pagination: { pageSize: 10, current: 1 },
-        }
-        this.props.clearListData()
-        this.setState(state, ()=>this.sendData(this.state.pagination))
+        else{
+            let obj = ListConst.tableList[type];
+            if(type=="gateway"){
+                columns=[
+                    ...obj.columns,
+                    {
+                        title: '操作',
+                        width: 200,
+                        render: (text, record) => (
+                            <span className="table-btns">
+                                <Button onClick={()=>this.onDeleteHandler(record._id)}>详情</Button>
+                                <Button onClick={()=>this.onDeleteHandler(record._id)}>推送redis</Button>
+                                <Button onClick={()=>this.onEditHandler(record._id)}>修改</Button>
+                                <Button onClick={()=>this.onDeleteHandler(record._id)}>删除</Button>
+                            </span>
+                        )
+                    }
+                ]
+            }
+            else{
+                columns=[
+                    ...obj.columns,
+                    {
+                        title: '操作',
+                        width: 200,
+                        render: (text, record) => (
+                            <span className="table-btns">
+                                <Button onClick={()=>this.onEditHandler(record._id)}>修改</Button>
+                                <Button onClick={()=>this.onDeleteHandler(record._id)}>删除</Button>
+                            </span>
+                        )
+                    }
+                ]
+            }
+            
+            let state = {
+                title: obj.title,
+                bnAddTitle: obj.subTitle.add,
+                columns: columns,
+                urlApi: obj.urlApi.list.api,
+                fetchType: obj.urlApi.list.type,
+                loading: false,
+                pagination: { pageSize: 10, current: 1 },
+            }
+                this.props.clearListData()
+                this.setState(state, ()=>this.sendData(this.state.pagination))
+            }
+         
     }
 
     sendData(pagination = {}){
