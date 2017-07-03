@@ -23,6 +23,12 @@ export default function update (state = initialState, action){
                 total: state.total-1,
                 listData: action.data
             }
+            
+        case ActionType.SEARCH_LIST_DATA:
+            return {
+                ...state,
+                listData: action.data.result
+            }
         case ActionType.CLEAR_LIST_DATA:
             return {
                 ...state,

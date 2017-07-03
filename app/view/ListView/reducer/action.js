@@ -57,3 +57,36 @@ export const clearListData = () => dispatch =>{
         type: ActionType.CLEAR_LIST_DATA
     })
 }
+
+
+
+/**推送到Redis */
+export const goRedies = () => dispatch => {
+    let url = "/api/sys/gateway/redis";
+    return dispatch(utils.sendMsg(url,{},'GET'))
+}
+
+/**推送到Redis */
+// export const searchApi = (data) => dispatch => {
+//     let url = "	/api/sys/gateway/list/"+data;;
+//     return dispatch(utils.sendMsg(url,{},'GET'))
+// }
+let searchData = (data, id) => ({
+    type: ActionType.SEARCH_LIST_DATA,
+    data: {
+         ...data,
+         result: data.result.map((obj, index)=>({
+         ...obj,
+         key: index+1
+       }))
+    }
+    
+})
+export const searchApi = (url, opt, type) => dispatch => {
+    return new Promise((resolve, reject) => {
+        dispatch(utils.sendMsg(url, opt, type)).then(data =>{
+            dispatch(searchData(data))
+            resolve&&resolve(data)
+        }, reject)
+    })
+}

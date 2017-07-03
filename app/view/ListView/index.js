@@ -6,9 +6,9 @@ import React, { PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { hashHistory } from 'react-router'
-import { Layout, Table, Button, Modal } from 'antd'
+import { Layout, Table, Button, Modal, Input } from 'antd'
 
-import { getListData, deleteListData, clearListData } from './reducer/action'
+import { getListData, deleteListData, clearListData, goRedies,searchApi} from './reducer/action'
 
 import * as RouterConst from '../../static/const/routerConst'
 import * as ListConst from '../../static/const/listConst'
@@ -33,59 +33,51 @@ class ListView extends React.Component {
     componentDidMount() {
         let type = this.props.params.table
         let columns;
-        
         if(!type){
             hashHistory.push(RouterConst.ROUTER_LIST + "/user")
             return
         }
+        else if(type=="gateway"){
+            columns=
+                {
+                    title: '操作',
+                    width: 200,
+                    render: (text, record) => (
+                        <span className="table-btns">
+                            <Button onClick={()=>this.onEditHandler(record._id)}>修改</Button>
+                            <Button onClick={()=>this.onDeleteHandler(record._id)}>删除</Button>
+                             <Button onClick={()=>this.onSeeInfo(record._id)}>查看详情</Button>
+                        </span>
+                    )
+                }
+        }
         else{
-            let obj = ListConst.tableList[type];
-            if(type=="gateway"){
-                columns=[
-                    ...obj.columns,
-                    {
-                        title: '操作',
-                        width: 200,
-                        render: (text, record) => (
-                            <span className="table-btns">
-                                <Button onClick={()=>this.onDeleteHandler(record._id)}>详情</Button>
-                                <Button onClick={()=>this.onDeleteHandler(record._id)}>推送redis</Button>
-                                <Button onClick={()=>this.onEditHandler(record._id)}>修改</Button>
-                                <Button onClick={()=>this.onDeleteHandler(record._id)}>删除</Button>
-                            </span>
-                        )
-                    }
-                ]
-            }
-            else{
-                columns=[
-                    ...obj.columns,
-                    {
-                        title: '操作',
-                        width: 200,
-                        render: (text, record) => (
-                            <span className="table-btns">
-                                <Button onClick={()=>this.onEditHandler(record._id)}>修改</Button>
-                                <Button onClick={()=>this.onDeleteHandler(record._id)}>删除</Button>
-                            </span>
-                        )
-                    }
-                ]
-            }
-            
-            let state = {
-                title: obj.title,
-                bnAddTitle: obj.subTitle.add,
-                columns: columns,
-                urlApi: obj.urlApi.list.api,
-                fetchType: obj.urlApi.list.type,
-                loading: false,
-                pagination: { pageSize: 10, current: 1 },
-            }
-                this.props.clearListData()
-                this.setState(state, ()=>this.sendData(this.state.pagination))
-            }
-         
+            columns=
+                {
+                    title: '操作',
+                    width: 200,
+                    render: (text, record) => (
+                        <span className="table-btns">
+                            <Button onClick={()=>this.onEditHandler(record._id)}>修改</Button>
+                            <Button onClick={()=>this.onDeleteHandler(record._id)}>删除</Button>
+                        </span>
+                    )
+                }
+        }
+        let obj = ListConst.tableList[type], state = {
+            title: obj.title,
+            bnAddTitle: obj.subTitle.add,
+            columns: [
+                ...obj.columns,
+                columns
+            ],
+            urlApi: obj.urlApi.list.api,
+            fetchType: obj.urlApi.list.type,
+            loading: false,
+            pagination: { pageSize: 10, current: 1 },
+        }
+        this.props.clearListData()
+        this.setState(state, ()=>this.sendData(this.state.pagination))
     }
 
     sendData(pagination = {}){
@@ -122,6 +114,24 @@ class ListView extends React.Component {
         hashHistory.push(RouterConst.ROUTER_FORM + "/edit/" +　this.props.params.table+"/"+id)
     }
 
+    onSeeInfo(id){
+        hashHistory.push(RouterConst.ROUTER_FORM + "/see/" +　this.props.params.table+"/"+id)
+    }
+    onRedis(){
+        Modal.confirm({
+            title: "提示",
+            content: "是否推送到Redis？",
+            onOk: ()=>{
+                this.props.goRedies().then(()=>{
+                    Modal.success({
+                        title: '提示',
+                        content: "推送成功"
+                    })
+                })
+            }
+        })
+        
+    }
     onDeleteHandler(id){
         let tableType = this.props.params.table, obj = ListConst.tableList[tableType]
         let url = obj.urlApi.delete.api+"/"+id, type = obj.urlApi.delete.type
@@ -139,7 +149,15 @@ class ListView extends React.Component {
             }
         })
     }
-
+    handlerChange(e){
+        this.setState({
+            apiValue:e.target.value
+        })
+    }
+    handlerClick(){
+       this.props.searchApi("/api/sys/gateway/list/"+this.state.apiValue, {},"GET")
+    }
+    
     render() {
         let { Content } = Layout
         let { title, bnAddTitle, loading, pagination, columns } = this.state
@@ -147,8 +165,20 @@ class ListView extends React.Component {
             <Content className="wapper_all">
                 <div className="headers">
                     <h6 className="title">{title}</h6>
-                    <Button className="headersButton" onClick={()=>this.onAddHandler()}>{bnAddTitle}</Button>
+                    <div>
+                        {this.props.params.table=='gateway'?
+                             <Button className="headersButton" 
+                            onClick={()=>this.onRedis()}
+                            style={{marginRight:20}}>推送到redis</Button>
+                        :""}
+                        <Button className="headersButton" onClick={()=>this.onAddHandler()}>{bnAddTitle}</Button>
+                    </div>
                 </div>
+                 {this.props.params.table=='gateway'?
+                        <div style={{textAlign:"right",marginTop:20,marginRight:20}}>
+                            <Input  style={{width:200,marginRight:10}} onChange={(e)=>this.handlerChange(e)}/>
+                            <Button className="headersButton" onClick={(e)=>this.handlerClick(e)} >搜索</Button>
+                        </div>:""}
                 <Table className="oTable"
                     columns={columns}
                     dataSource={this.props.listData}
@@ -173,7 +203,7 @@ let mapStateToProps = state => ({
 })
 
 let mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({ getListData, deleteListData, clearListData }, dispatch)
+    return bindActionCreators({ getListData, deleteListData, clearListData ,goRedies,searchApi}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListView)

@@ -843,7 +843,8 @@ export const tableList = {
         title: "API网关",
         subTitle: {
             add: "新增网关",
-            edit: "修改网关"
+            edit: "修改网关",
+            see:"查看详情"
         },
         columns: [
             {
@@ -856,11 +857,39 @@ export const tableList = {
             },
             {
                 title: '是否可用',
-                dataIndex: "isUse"
+                dataIndex: "isUse",
+                render(text){
+                    if(text==false){
+                        return "否"
+                    }
+                    else{
+                        return "是"
+                    }
+                }
             },
             {
                 title: "是否需要登录",
                 dataIndex: "isLogin",
+                render(text){
+                    if(text==false){
+                        return "否"
+                    }
+                    else{
+                        return "是"
+                    }
+                }
+            },
+            {
+                title: "是否拦截",
+                dataIndex: "isGreatWall",
+                render(text){
+                    if(text==false){
+                        return "否"
+                    }
+                    else{
+                        return "是"
+                    }
+                }
             },
             {
                 title: "版本号",
@@ -877,6 +906,10 @@ export const tableList = {
             {
                 title: '文档地址',
                 dataIndex: 'docmentUrl',
+            },
+            {
+                title: '请求方式',
+                dataIndex: 'method',
             }
         ],
         urlApi: {
@@ -889,14 +922,23 @@ export const tableList = {
                 type: "POST"
             },
             delete: {
-                api: "/api/sys/db/dictionary",
+                api: "/api/sys/gateway",
                 type: "DELETE"
             },
             edit: {
-                api: "/api/sys/db/dictionary/up",
+                api: "/api/sys/gateway",
                 type: "PUT"
             },
-            form: null
+            see:{
+                api: "/api/sys/gateway",
+                type: "GET"
+            },
+            form: {
+                product: {
+                    api: "/api/sys/v1/dictionary/GatewayTypes",
+                    type: "GET"
+                }
+            }
         },
         add: [
             {
@@ -908,50 +950,59 @@ export const tableList = {
                 key: "url",
                 minLength: 1,
                 maxLength: 30,
-                value: ""
+                value: false
             },
             {
                 id: "isUse",
                 title: "是否可用",
-                type: "text",
-                placeholder: "",
+                type: "switch",
                 isRequired: true,
+                placeholder: "",
                 key: "isUse",
-                value: ""
+                value: false
             },
             {
                 id: "isLogin",
                 title: "是否需要登录",
-                type: "text",
-                placeholder: "",
+                type: "switch",
                 isRequired: true,
+                placeholder: "",
                 key: "isLogin",
-                value: ""
+                value: false
+            },
+            {
+                id: "isGreatWall",
+                title: "是否拦截",
+                type: "switch",
+                isRequired: true,
+                placeholder: "",
+                key: "isGreatWall",
+                value: false
             },
             {
                 id: "version",
                 title: "版本号",
                 type: "number",
-                placeholder: "",
                 isRequired: true,
+                placeholder: "",
                 key: "version",
                 value: ""
             },
             {
                 id: "product",
                 title: "项目",
-                type: "text",
-                aceholder: "",
+                type: "select",
                 isRequired: true,
+                aceholder: "",
                 key: "product",
                 value: ""
             },
             {
                 id: "describe",
                 title: "描述",
-                type: "number",
-                placeholder: "",
+                type: "textarea",
                 isRequired: true,
+                placeholder: "",
                 key: "describe",
                 value: ""
             },
@@ -959,9 +1010,18 @@ export const tableList = {
                 id: "docmentUrl",
                 title: "文档地址",
                 type: "text",
-                aceholder: "",
                 isRequired: true,
+                aceholder: "",
                 key: "docmentUrl",
+                value: ""
+            },
+            {
+                id: "method",
+                title: "请求方式",
+                type: "text",
+                isRequired: true,
+                aceholder: "",
+                key: "method",
                 value: ""
             }
         ],
@@ -980,45 +1040,54 @@ export const tableList = {
             {
                 id: "isUse",
                 title: "是否可用",
-                type: "text",
-                placeholder: "",
+                type: "switch",
                 isRequired: true,
+                placeholder: "",
                 key: "isUse",
                 value: ""
             },
             {
                 id: "isLogin",
                 title: "是否需要登录",
-                type: "text",
-                placeholder: "",
+                type: "switch",
                 isRequired: true,
+                placeholder: "",
                 key: "isLogin",
+                value: ""
+            },
+            {
+                id: "isGreatWall",
+                title: "是否拦截",
+                type: "switch",
+                isRequired: true,
+                placeholder: "",
+                key: "isGreatWall",
                 value: ""
             },
             {
                 id: "version",
                 title: "版本号",
                 type: "number",
-                placeholder: "",
                 isRequired: true,
+                placeholder: "",
                 key: "version",
                 value: ""
             },
             {
                 id: "product",
                 title: "项目",
-                type: "text",
-                aceholder: "",
+                type: "select",
                 isRequired: true,
+                aceholder: "",
                 key: "product",
                 value: ""
             },
             {
                 id: "describe",
                 title: "描述",
-                type: "number",
-                placeholder: "",
+                type: "textarea",
                 isRequired: true,
+                placeholder: "",
                 key: "describe",
                 value: ""
             },
@@ -1026,11 +1095,97 @@ export const tableList = {
                 id: "docmentUrl",
                 title: "文档地址",
                 type: "text",
-                aceholder: "",
                 isRequired: true,
+                aceholder: "",
                 key: "docmentUrl",
+                value: ""
+            },
+            {
+                id: "method",
+                title: "请求方式",
+                type: "text",
+                isRequired: true,
+                aceholder: "",
+                key: "method",
                 value: ""
             }
         ],
+        see: [
+            {
+                id: "url",
+                title: "地址",
+                type: "label",
+                placeholder: "",
+                key: "url",
+                minLength: 1,
+                maxLength: 30,
+                value: ""
+            },
+            {
+                id: "isUse",
+                title: "是否可用",
+                type: "ilabel",
+                placeholder: "",
+                key: "isUse",
+                value: ""
+            },
+            {
+                id: "isLogin",
+                title: "是否需要登录",
+                type: "ilabel",
+                placeholder: "",
+                key: "isLogin",
+                value: ""
+            },
+            {
+                id: "isGreatWall",
+                title: "是否拦截",
+                type: "ilabel",
+                placeholder: "",
+                key: "isGreatWall",
+                value: ""
+            },
+            {
+                id: "version",
+                title: "版本号",
+                type: "label",
+                placeholder: "",
+                key: "version",
+                value: ""
+            },
+            {
+                id: "product",
+                title: "项目",
+                type: "label",
+                aceholder: "",
+                key: "product",
+                value: ""
+            },
+            {
+                id: "describe",
+                title: "描述",
+                type: "label",
+                placeholder: "",
+                key: "describe",
+                value: ""
+            },
+            {
+                id: "docmentUrl",
+                title: "文档地址",
+                type: "label",
+                aceholder: "",
+                key: "docmentUrl",
+                value: ""
+            },
+            {
+                id: "method",
+                title: "请求方式",
+                type: "label",
+                aceholder: "",
+                key: "method",
+                value: ""
+            }
+        ]
+
     }
 }

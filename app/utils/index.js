@@ -66,7 +66,9 @@ export function sendMsg(url, param, type = "GET",headers={}, repType="json"){
                     resolve&&resolve(data.result || null)
                 }else if(data.code === 200){
                     reject&&reject(data)
-                    hashHistory.push(RouterConst.ROUTER_LOGIN)
+                    setTimeout(function(){
+                         hashHistory.push(RouterConst.ROUTER_LOGIN)
+                    },200)
                 }else{
                     reject&&reject(data)
                     Modal.error({

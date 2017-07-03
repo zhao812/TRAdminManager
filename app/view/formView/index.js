@@ -5,7 +5,7 @@ import React, { PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { hashHistory } from 'react-router'
-import { Layout, Input, Button, Select, TreeSelect, Modal, Cascader } from 'antd'
+import { Layout, Input, Button, Select, TreeSelect, Modal, Cascader, Switch  } from 'antd'
 
 import { sendFormData, getListDataById, getListParentData } from './reducer/action'
 
@@ -28,6 +28,7 @@ class FormView extends React.Component{
     }
 
     componentDidMount(){
+        console.log(this.props.params,1878)
         let { action, table, id } = this.props.params, obj = ListConst.tableList[table]
         let listData, data = obj[action]
         if(id){
@@ -90,16 +91,21 @@ class FormView extends React.Component{
     onSelectChangeHandler(value, id){
         this.setChangeValue(value, id)
     }
-
+    handlerSwitchChange(value, id){
+        this.setChangeValue(value, id)
+    }
     setChangeValue(value, id){
         let data = this.state.data.map(obj => {
             if(obj.id == id){
-                if(obj.type == "number") value = parseInt(value)
+                if(obj.type == "number") {
+                    value = parseInt(value)
+                }
                 return {
                     ...obj,
                     value: value
                 }
-            }else{
+            }
+            else{
                 return obj
             }
         })
@@ -146,6 +152,24 @@ class FormView extends React.Component{
                 let opt = this.getCascaderOptions(this.props.parentData[obj.id] || [])
                 return (
                     <Cascader options={opt}  placeholder={obj.placeholder} value={obj.value || []} onChange={(e)=>this.onSelectChangeHandler(e, obj.id)} />
+                )
+            case "switch":
+                return (
+                    <Switch onChange={(e)=>this.handlerSwitchChange(e,obj.id)} defaultChecked={obj.value ||false} />
+                )
+            case "ilabel":
+                let value;
+                if (obj.value==true) {
+                    value="是"
+                }else if (obj.value==false) {
+                    value="否"
+                }
+                return (
+                    <span>{value}</span>
+                )
+            case "label":
+                return (
+                    <span>{obj.value}</span>
                 )
             default:
                 return ""
@@ -209,7 +233,7 @@ class FormView extends React.Component{
         for(let i=0; i<data.length; i++){
             let obj = data[i]
             if(obj.isRequired){
-                if(obj.value == ""){
+                if(obj.value == ""&&obj.type!="switch"){
                     result.message = obj.title + "不能为空！"
                     return result
                 }else if(obj.minLength && obj.value.length<obj.minLength){
@@ -240,6 +264,10 @@ class FormView extends React.Component{
             }
             let {urlApi, fetchType} = this.state, tip = "创建成功！"
             if(this.props.params.action == "edit"){
+                if(this.props.params.table=="gateway"){
+                    console.log(this.props.params)
+                    urlApi = urlApi+"/"+this.props.params.id;
+                }
                 data.data._id = this.props.params.id
                 tip = "修改成功！"
             }
@@ -257,7 +285,7 @@ class FormView extends React.Component{
 
     render(){
         let { Content } = Layout
-
+        console.log(this.state,19999)
         return(
             <Content >
                 <div className="wapper_all">
@@ -266,8 +294,15 @@ class FormView extends React.Component{
                         {this.getAttributesDiv()}
                     </div>
                     <div className="oTable ml100">
-                        <Button onClick={()=>this.onClickHandler(true)} type="primary">确定</Button>
-                        <Button onClick={()=>this.onClickHandler()}>取消</Button>
+                        {this.props.params.action=="see"?
+                             <Button onClick={()=>this.onClickHandler()}>返回</Button>:
+                             
+                            <div>
+                                <Button onClick={()=>this.onClickHandler(true)} type="primary">确定</Button>
+                                 <Button onClick={()=>this.onClickHandler()}>取消</Button>
+                            </div>
+                        }
+                        
                     </div>
                 </div>
             </Content>
